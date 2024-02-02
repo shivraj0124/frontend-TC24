@@ -1,5 +1,7 @@
 import React from "react";
 import LoginFormFields from "../Login/LoginFormFields";
+import POCForm from "./POCForm";
+import HODForm from "./HODForm";
 import themeHook from "../Context";
 function LoginForm() {
   const { findForm, setFindForm } = themeHook();
@@ -52,8 +54,10 @@ function LoginForm() {
           </button>
         </div>
         <hr className="text-gray-300 h-[1px] mt-12 max-md:mt-5 w-[100%] bg-gray-200" />
-        <div className="w-[96%] rounded-md mt-8 max-md:mt-2 ">
+        <div className="w-[96%] rounded-md mt-8 max-md:mt-2 ">{
+          findForm === 'POC' ?  <POCForm /> : findForm === 'HOD' ? <HODForm /> : 
           <LoginFormFields />
+        }
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import LoginFormFields from "../Login/LoginFormFields";
 import POCForm from "./POCForm";
 import HODForm from "./HODForm";
 import themeHook from "../Context";
+import { Link } from "react-router-dom";
 function LoginForm() {
   const { findForm, setFindForm } = themeHook();
   // const navigate =useNavigate()
@@ -54,10 +55,27 @@ function LoginForm() {
           </button>
         </div>
         <hr className="text-gray-300 h-[1px] mt-12 max-md:mt-5 w-[100%] bg-gray-200" />
-        <div className="w-[96%] rounded-md mt-8 max-md:mt-2 ">{
-          findForm === 'POC' ?  <POCForm /> : findForm === 'HOD' ? <HODForm /> : 
-          <LoginFormFields />
-        }
+        <div className="w-[96%] rounded-md mt-8 max-md:mt-2 ">
+          {findForm === "POC" ? (
+            <POCForm />
+          ) : findForm === "HOD" ? (
+            <HODForm />
+          ) : (
+            <LoginFormFields />
+          )}
+        </div>
+        <div>
+          <h2>
+            Don't have an account ?
+            <Link
+              className="cursor-pointer text-blue-500"
+              onClick={() => setFindForm("Student")}
+              to="/SignUp"
+            >
+              {" "}
+              Register
+            </Link>
+          </h2>
         </div>
       </div>
     </div>

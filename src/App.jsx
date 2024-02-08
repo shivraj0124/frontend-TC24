@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from 'react-hot-toast';
 import { ContextProvider } from "../src/Components/Context";
 import LoginForm from "./Components/Login/Login";
 import SignUp from "./Components/SignUp";
@@ -12,6 +13,7 @@ function App() {
             <Route path="/SignUp" element={<SignUp />}></Route>
           </Routes>
         </BrowserRouter>
+        <Toaster/>
       </ContextProvider>
     </>
   );

@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import signUpImage from "../assets/signUp.png";
 import axios from "axios";
 import toast from "react-hot-toast";
 import themeHook from "./Context";
 import { Link, useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 function SignUp() {
   const { findForm, setFindForm } = themeHook();
   const [fullName, setFullName] = useState("");
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
-  const [collegeName, setCollegeName] = useState("");
+  const [selectedCollege, setSelectedCollege] = useState();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [eye, setEye] = useState(false);
+  const [collegeList, setCollegeList] = useState([]);
   const navigate = useNavigate();
   const validateFullName = (name) => /^[a-zA-Z\s]*$/.test(name);
   const validateMobile = (number) => /^\d{10}$/.test(number);
@@ -21,6 +23,7 @@ function SignUp() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    console.log("selectedCollege", selectedCollege);
     if (!validateFullName(fullName)) {
       toast.error("Please enter a valid full name");
       return;
@@ -41,6 +44,7 @@ function SignUp() {
         email: email,
         userType: "student",
         mobileNo: mobile,
+        allocated_college:selectedCollege
       });
       console.log(result);
       if (result.data.data.status === 200) {
@@ -59,7 +63,20 @@ function SignUp() {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
-
+  const getAllColleges = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:8000/api/college/getAllColleges"
+      );
+      console.log(result.data.data);
+      setCollegeList(result.data.data.data);
+    } catch (err) {
+      toast.error(err.message); // Use err.message to get the error message
+    }
+  };
+  useEffect(() => {
+    getAllColleges();
+  }, [findForm]);
   return (
     <div className="pt-5  h-screen flex justify-center bg-blue-50 overflow-y-auto">
       <div className="flex flex-row fixed  bg-[#fcfcfe] shadow-xl rounded-md mt-10 max-md:mt-2  max-md:w-[90%] justify-center items-center w-max h-max py-4 ">
@@ -106,16 +123,26 @@ function SignUp() {
               </div>
               <div className="flex flex-col">
                 <label className="mt-5">College Name</label>
-                <input
-                  type="text"
+                <select
                   className="border-2 border-gray-300 rounded-md px-2 py-1 focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                  placeholder="Enter Your College Name"
-                  onChange={(e) => setCollegeName(e.target.value)}
-                  required
-                />
+                  value={selectedCollege}
+                  onChange={(event) => {
+                    setSelectedCollege(event.target.value);
+                  }}
+                >
+                  <option value="">Select Your College</option>
+                  {collegeList &&
+                    collegeList.map((item, index) => {
+                      return (
+                        <option key={index + 1} id={item._id} value={item._id}>
+                          {item.name}
+                        </option>
+                      );
+                    })}
+                </select>
               </div>
             </div>
-            <div>
+            <div className="mb-5">
               <div className="flex flex-col">
                 <label className="mt-5">Username</label>
                 <input
@@ -144,12 +171,21 @@ function SignUp() {
                 </div>
               </div>
             </div>
-            <button
+            {/* <button
               type="submit"
               className="mt-10 px-5 py-2 bg-blue-500 text-white hover:bg-blue-700 text-xl rounded-md"
             >
               Submit
-            </button>
+            </button> */}
+            <Button
+              variant="contained"
+              type="submit"
+              style={{
+                backgroundColor: "##1d4ed8",
+              }}
+            >
+              Submit
+            </Button>
             <div>
               <h2 className="text-center mt-5">
                 Already have an account ?{" "}

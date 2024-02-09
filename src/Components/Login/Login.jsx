@@ -1,5 +1,5 @@
 import React from "react";
-import LoginFormFields from "../Login/LoginFormFields";
+import StudentLogin from "../Login/StudentLogin";
 import POCForm from "./POCForm";
 import HODForm from "./HODForm";
 import themeHook from "../Context";
@@ -61,7 +61,7 @@ function LoginForm() {
           ) : findForm === "HOD" ? (
             <HODForm />
           ) : (
-            <LoginFormFields />
+            <StudentLogin />
           )}
         </div>
         <div>

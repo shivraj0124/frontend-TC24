@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 function StudentLogin() {
-  const { findForm } = themeHook();
+  const { findForm,setToken } = themeHook();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [cookies, setCookie] = useCookies(["token"]);
@@ -22,7 +22,8 @@ function StudentLogin() {
       if (result.data.data.status === true) {
         toast.success(result.data.data.msg);
         console.log("token", result.data.data.token);
-        setCookie('token', result.data.data.token, { path: '/' });
+        setToken(result.data.data.token)
+        setCookie("token", result.data.data.token, { path: "/" });
         navigate("/");
       } else {
         toast(result.data.data.msg, {
@@ -37,6 +38,7 @@ function StudentLogin() {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
+  
   useEffect(() => {}, [findForm]);
   return (
     <div className="text-center flex flex-col items-center justify-center bg-white rounded-md pt-5 pb-5 ">
@@ -61,7 +63,7 @@ function StudentLogin() {
           variant="contained"
           type="submit"
           style={{
-            backgroundColor: "##1d4ed8",
+            backgroundColor: "#1d4ed8",
           }}
         >
           Login

@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 function StudentLogin() {
-  const { findForm,setToken } = themeHook();
+  const { findForm, setToken } = themeHook();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [cookies, setCookie] = useCookies(["token"]);
@@ -22,9 +22,8 @@ function StudentLogin() {
       if (result.data.data.status === true) {
         toast.success(result.data.data.msg);
         console.log("token", result.data.data.token);
-        setToken(result.data.data.token)
-        setCookie("token", result.data.data.token, { path: "/" });
-        navigate("/");
+        setCookie('token', result.data.data.token, { path: '/' });
+        navigate("/student");
       } else {
         toast(result.data.data.msg, {
           iconTheme: {
@@ -38,8 +37,7 @@ function StudentLogin() {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
-  
-  useEffect(() => {}, [findForm]);
+  useEffect(() => { }, [findForm]);
   return (
     <div className="text-center flex flex-col items-center justify-center bg-white rounded-md pt-5 pb-5 ">
       <h1 className="text-2xl font-semibold ">{findForm} Login</h1>

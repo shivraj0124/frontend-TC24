@@ -6,6 +6,7 @@ import { BiUserCircle } from "react-icons/bi";
 import { BiBookmark } from "react-icons/bi";
 import { IoSettingsOutline } from "react-icons/io5";
 import themeHook from '../Context';
+import { Link } from 'react-router-dom'
 
 
 function Sidebar({ data }) {
@@ -20,29 +21,29 @@ function Sidebar({ data }) {
     return (
         <div className=' flex flex-col border w-full p-4 h-full justify-between'>
             <ul className='flex flex-col w-full gap-2'>
-                <li className={` ${sidebarvalue == "Home" ? " bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
+                <Link to={"/home"} className={` ${sidebarvalue == "Home" ? " bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
                     <div className=' flex  items-center'> <BiHome size={22} className='' /></div>
                     <div> Home</div>
-                </li>
+                </Link>
 
-                <li className={` ${sidebarvalue == "College" ? " bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
+                <Link to={"/college"} className={` ${sidebarvalue == "College" ? " bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
                     <div className=' flex  items-center'> <IoSchoolOutline size={22} className='' /></div>
                     <div> College</div>
-                </li>
+                </Link>
 
-                <li className={` ${sidebarvalue == "Profile" ? "  bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
+                <Link className={` ${sidebarvalue == "Profile" ? "  bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
                     <div className=' flex  items-center'> <BiUserCircle size={22} className='  ' /></div>
                     <div> Profile</div>
-                </li>
+                </Link>
 
-                <li className={` ${sidebarvalue == "Saved" ? "  bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
+                <Link className={` ${sidebarvalue == "Saved" ? "  bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
                     <div className=' flex  items-center'> <BiBookmark size={22} className='  ' /></div>
                     <div> Saved</div>
-                </li>
-                <li className={` ${sidebarvalue == "Settings" ? "  bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
+                </Link>
+                <Link className={` ${sidebarvalue == "Settings" ? "  bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
                     <div className=' flex  items-center'> <IoSettingsOutline size={22} className='  ' /></div>
                     <div> Settings</div>
-                </li>
+                </Link>
             </ul>
             <div className=' flex flex-col gap-1 bg-bgwhite rounded-lg p-3 mb-10'>
                 <section className=' flex gap-2 justify-center items-center'>

@@ -7,7 +7,7 @@ function RightCard({ data }) {
     const [college_name, setcollege_name] = useState("")
     const getcollege = async () => {
         const col = await axios.post("http://localhost:8000/api/college/onecollge", { college: data.allocated_college });
-        console.log(col.data.data);
+        //console.log(col.data.data);
         setcollege_name(col.data.data);
     }
 

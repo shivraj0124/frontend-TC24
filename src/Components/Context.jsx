@@ -6,11 +6,20 @@ export const ContextProvider = ({ children }) => {
   const [findForm, setFindForm] = useState("Student");
   const [token, setToken] = useState("");
   const [sidebarvalue, setsidebarvalue] = useState("Home");
+  const [filtertime, setfiltertime] = useState("latest");
+  const [filterbycollge, setfilterbycollge] = useState("all");
+
   const value = {
     findForm,
     setFindForm,
     token,
-    setToken
+    setToken,
+    sidebarvalue,
+    setsidebarvalue,
+    setfiltertime,
+    filtertime,
+    filterbycollge,
+    setfilterbycollge
   };
   useEffect(() => {
     const tokenFromCookie = Cookies.get("token");
@@ -19,10 +28,8 @@ export const ContextProvider = ({ children }) => {
       console.log(tokenFromCookie);
     }
   }, [])
-  sidebarvalue,
-    setsidebarvalue
-};
-return <Context.Provider value={value}>{children}</Context.Provider>;
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 const themeHook = () => {

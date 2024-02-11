@@ -9,6 +9,7 @@ import {
 } from "react-icons/bi";
 import { RiAdminFill } from "react-icons/ri";
 import CollegesTable from "./CollegesTable";
+import PocTable from "./PocTable";
 function Sidebar() {
   const [component, setComponent] = useState("Dashboard");
   return (
@@ -55,7 +56,7 @@ function Sidebar() {
           ) : component === "Colleges" ? (
             <CollegesTable />
           ) : component === "PocS" ? (
-            ""
+           <PocTable />
           ) : (
             ""
           )}

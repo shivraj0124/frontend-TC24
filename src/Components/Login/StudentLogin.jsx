@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 function StudentLogin() {
-  const { findForm } = themeHook();
+  const { findForm, setToken } = themeHook();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [cookies, setCookie] = useCookies(["token"]);
@@ -61,7 +61,7 @@ function StudentLogin() {
           variant="contained"
           type="submit"
           style={{
-            backgroundColor: "##1d4ed8",
+            backgroundColor: "#1d4ed8",
           }}
         >
           Login

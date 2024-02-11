@@ -19,8 +19,8 @@ function CollegesTable() {
   const { token } = themeHook();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4);
-  const [pagesize, setPagesize] = useState(2);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pagesize, setPagesize] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
   const [collegeList, setCollegeList] = useState([]);
   const [collegeListCount, setCollegeListCount] = useState([]);
@@ -157,51 +157,52 @@ function CollegesTable() {
     e.preventDefault();
     console.log(collegeName, about, address);
     try {
-        const result = await axios.post(
-          "http://localhost:8000/api/admin/editCollege",
-          {
-            id: editCollege.id,
-            name:collegeName,
-            about:about,
-            address: address,
-            userType: "admin",
+      const result = await axios.post(
+        "http://localhost:8000/api/admin/editCollege",
+        {
+          id: editCollege.id,
+          name: collegeName,
+          about: about,
+          address: address,
+          userType: "admin",
+        },
+        {
+          headers: {
+            authentication: `Bearer ${token}`,
           },
-          {
-            headers: {
-              authentication: `Bearer ${token}`,
-            },
-          }
-        );
-        if (result.data.data.status) {
-          toast.success(result.data.data.msg);
-        } else {
-          toast.error(result.data.data.msg);
         }
-      } catch (err) {
-        toast.error(err.message); // Use err.message to get the error message
+      );
+      if (result.data.data.status) {
+        toast.success(result.data.data.msg);
+      } else {
+        toast.error(result.data.data.msg);
       }
-      setIsModelOpen3(false);
+    } catch (err) {
+      toast.error(err.message); // Use err.message to get the error message
+    }
+    setIsModelOpen3(false);
   };
   useEffect(() => {
     getAllColleges();
-  }, [page, pagesize, pageNumber, isModelOpen, isModelOpen2,isModelOpen3]);
+  }, [page, pagesize, pageNumber, isModelOpen, isModelOpen2, isModelOpen3]);
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-row justify-between w-[86%]">
+    <div className="flex flex-col w-full  h-[90vh] p-5">
+      <div className="flex flex-row justify-between ">
         <div>
           <h1 className="text-lg font-semibold ">College List</h1>
         </div>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 items-center">
           <input
             type="text"
             placeholder="Search here"
-            className="p-2 rounded-xl focus:outline-none border-2 border-gray-200"
+            className="h-max p-1 px-2 rounded-md focus:outline-none border-2 border-gray-200"
             onChange={(e) => handleSearch(e.target.value)}
           />
           <Button
             variant="contained"
             style={{
-              backgroundColor: "##1d4ed8",
+              backgroundColor: "#327c1c",
+              height: "max-content",
             }}
             onClick={() => setIsModelOpen(true)}
           >
@@ -210,7 +211,7 @@ function CollegesTable() {
         </div>
       </div>
       <div className=" mt-5 rounded">
-        <Paper sx={{ width: "86%" }}>
+        <Paper sx={{ width: "100%" }}>
           <TableContainer sx={{ maxHeight: 550 }}>
             <Table stickyHeader>
               <TableHead>
@@ -255,7 +256,7 @@ function CollegesTable() {
                         <TableCell>
                           <div className="flex flex-row gap-2">
                             <h2
-                              className="text-green-500 cursor-pointer"
+                              className="text-blue-700 cursor-pointer"
                               onClick={() =>
                                 handleEditCollegeModal(
                                   item._id,
@@ -284,7 +285,7 @@ function CollegesTable() {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[2, 4, 6, 100]}
+            rowsPerPageOptions={[10, 25, 50, 100]}
             rowsPerPage={rowsPerPage}
             page={page}
             count={collegeListCount}
@@ -349,7 +350,7 @@ function CollegesTable() {
                             variant="contained"
                             type="submit"
                             style={{
-                              backgroundColor: "#FFAE00",
+                              backgroundColor: "#16a34a",
                               height: "max-content",
                             }}
                           >
@@ -359,8 +360,9 @@ function CollegesTable() {
                             onClick={() => setIsModelOpen(false)}
                             variant="contained"
                             style={{
-                              backgroundColor: "#E53935",
+                              backgroundColor: "#dcfce7",
                               height: "max-content",
+                              color: "#16a34a",
                             }}
                           >
                             Cancel
@@ -405,16 +407,6 @@ function CollegesTable() {
                         </h3>
                         <div className="flex gap-2 mt-10">
                           <Button
-                            onClick={() => setIsModelOpen(false)}
-                            variant="contained"
-                            style={{
-                              backgroundColor: "#a1a1aa",
-                              height: "max-content",
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
                             variant="contained"
                             type="submit"
                             style={{
@@ -423,6 +415,17 @@ function CollegesTable() {
                             }}
                           >
                             Delete
+                          </Button>
+                          <Button
+                            onClick={() => setIsModelOpen2(false)}
+                            variant="contained"
+                            style={{
+                              backgroundColor: "#dcfce7",
+                              height: "max-content",
+                              color: "#16a34a",
+                            }}
+                          >
+                            Cancel
                           </Button>
                         </div>
                       </div>
@@ -492,7 +495,7 @@ function CollegesTable() {
                             variant="contained"
                             type="submit"
                             style={{
-                              backgroundColor: "#FFAE00",
+                              backgroundColor: "#16a34a",
                               height: "max-content",
                             }}
                           >
@@ -502,8 +505,9 @@ function CollegesTable() {
                             onClick={() => setIsModelOpen3(false)}
                             variant="contained"
                             style={{
-                              backgroundColor: "#E53935",
+                              backgroundColor: "#dcfce7",
                               height: "max-content",
+                              color: "#16a34a",
                             }}
                           >
                             Cancel

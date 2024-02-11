@@ -19,8 +19,8 @@ function PocTable() {
   const { token } = themeHook();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4);
-  const [pagesize, setPagesize] = useState(2);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pagesize, setPagesize] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
   const [pocList, setPocList] = useState([]);
   const [pocListCount, setPocListCount] = useState([]);
@@ -36,7 +36,7 @@ function PocTable() {
   const [collegeId, setDeletePocsetCollegeId] = useState();
   const [isModelOpen3, setIsModelOpen3] = useState(false);
   const [editPoc, setEditPoc] = useState();
-  const [deletePoc,setDeletePoc] = useState()
+  const [deletePoc, setDeletePoc] = useState();
   const handleRowsPerPageChange = (event) => {
     console.log("mypagesize", event.target.value);
     setLoading(true);
@@ -127,6 +127,7 @@ function PocTable() {
         setLoading(false);
       }, 2000);
     }
+    search.trim() === "" ? getAllPoc() :''
   };
   const handleDeletePocModal = async (id, name) => {
     setDeletePoc({ id: id, name: name });
@@ -179,7 +180,7 @@ function PocTable() {
 
   const handleEditPoc = async (e) => {
     e.preventDefault();
-    console.log(token,'tokennn')
+    console.log(token, "tokennn");
 
     try {
       const result = await axios.post(
@@ -223,22 +224,23 @@ function PocTable() {
     getAllPoc();
   }, [page, pagesize, pageNumber, isModelOpen, isModelOpen2, isModelOpen3]);
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-row justify-between w-[86%]">
+    <div className="flex flex-col w-full  h-[90vh] p-5">
+      <div className="flex flex-row justify-between w-[100%]">
         <div>
           <h1 className="text-lg font-semibold ">Poc List</h1>
         </div>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 items-center">
           <input
             type="text"
             placeholder="Search here"
-            className="p-2 rounded-xl focus:outline-none border-2 border-gray-200"
+            className="h-max p-1 px-2 rounded-md focus:outline-none border-2 border-gray-200"
             onChange={(e) => handleSearch(e.target.value)}
           />
           <Button
             variant="contained"
             style={{
-              backgroundColor: "##1d4ed8",
+              backgroundColor: "#327c1c",
+              height: "max-content",
             }}
             onClick={() => {
               setIsModelOpen(true);
@@ -250,7 +252,7 @@ function PocTable() {
         </div>
       </div>
       <div className=" mt-5 rounded">
-        <Paper sx={{ width: "86%" }}>
+        <Paper sx={{ width: "100%" }}>
           <TableContainer sx={{ maxHeight: 550 }}>
             <Table stickyHeader>
               <TableHead>
@@ -297,7 +299,7 @@ function PocTable() {
                         <TableCell>
                           <div className="flex flex-row gap-2">
                             <h2
-                              className="text-green-500 cursor-pointer"
+                              className="text-blue-700 cursor-pointer"
                               onClick={() =>
                                 handleEditPocModal(
                                   item._id,
@@ -313,10 +315,7 @@ function PocTable() {
                             <h2
                               className="text-red-500 cursor-pointer"
                               onClick={() =>
-                                handleDeletePocModal(
-                                  item._id,
-                                  item.username
-                                )
+                                handleDeletePocModal(item._id, item.username)
                               }
                             >
                               Delete
@@ -408,7 +407,7 @@ function PocTable() {
                             variant="contained"
                             type="submit"
                             style={{
-                              backgroundColor: "#FFAE00",
+                              backgroundColor: "#16a34a",
                               height: "max-content",
                             }}
                           >
@@ -418,8 +417,9 @@ function PocTable() {
                             onClick={() => setIsModelOpen(false)}
                             variant="contained"
                             style={{
-                              backgroundColor: "#E53935",
+                              backgroundColor: "#dcfce7",
                               height: "max-content",
+                              color: "#16a34a",
                             }}
                           >
                             Cancel
@@ -464,16 +464,6 @@ function PocTable() {
                         </h3>
                         <div className="flex gap-2 mt-10">
                           <Button
-                            onClick={() => setIsModelOpen(false)}
-                            variant="contained"
-                            style={{
-                              backgroundColor: "#a1a1aa",
-                              height: "max-content",
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
                             variant="contained"
                             type="submit"
                             style={{
@@ -482,6 +472,17 @@ function PocTable() {
                             }}
                           >
                             Delete
+                          </Button>
+                          <Button
+                            onClick={() => setIsModelOpen2(false)}
+                            variant="contained"
+                            style={{
+                              backgroundColor: "#dcfce7",
+                              height: "max-content",
+                              color: "#16a34a",
+                            }}
+                          >
+                            Cancel
                           </Button>
                         </div>
                       </div>
@@ -565,18 +566,19 @@ function PocTable() {
                             variant="contained"
                             type="submit"
                             style={{
-                              backgroundColor: "#FFAE00",
+                              backgroundColor: "#16a34a",
                               height: "max-content",
                             }}
                           >
                             Submit
                           </Button>
                           <Button
-                            onClick={() => setIsModelOpen(false)}
+                            onClick={() => setIsModelOpen3(false)}
                             variant="contained"
                             style={{
-                              backgroundColor: "#E53935",
+                              backgroundColor: "#dcfce7",
                               height: "max-content",
+                              color: "#16a34a",
                             }}
                           >
                             Cancel

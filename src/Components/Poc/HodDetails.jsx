@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import themeHook from "../Context";
-function PocTable() {
+function HodDetails() {
   const { token } = themeHook();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -597,4 +597,4 @@ function PocTable() {
   );
 }
 
-export default PocTable;
+export default HodDetails;

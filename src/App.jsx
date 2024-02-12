@@ -11,6 +11,7 @@ import College from "./Components/student/College";
 import CollegesTable from "./Components/Admin/CollegesTable";
 import PocTable from "./Components/Admin/PocTable";
 import AdminHome from "./Components/Admin/AdminHome";
+import OneCollege from "./Components/student/OneCollege";
 function App() {
   return (
     <>
@@ -31,6 +32,8 @@ function App() {
                 <Route index element={<MainContent />} />
                 <Route path="/home" element={<MainContent />} />
                 <Route path="/college" element={<College />} />
+                <Route path="/profile" element={<MainContent />} />
+                <Route path="/collage/:id" element={<OneCollege />} />
               </Route>
             </Routes>
           </BrowserRouter>

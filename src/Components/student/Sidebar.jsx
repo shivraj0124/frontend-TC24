@@ -31,7 +31,7 @@ function Sidebar({ data }) {
                     <div> College</div>
                 </Link>
 
-                <Link className={` ${sidebarvalue == "Profile" ? "  bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
+                <Link to={"/profile"} className={` ${sidebarvalue == "Profile" ? "  bg-[#f5f5f5] text-textgreen" : ""} hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`} onClick={handleItemClick}>
                     <div className=' flex  items-center'> <BiUserCircle size={22} className='  ' /></div>
                     <div> Profile</div>
                 </Link>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 function CollegeCard({ data }) {
     const navigate = useNavigate();
     console.log(data);
+    const Navigate = useNavigate();
     return (
         <div className=' flex flex-col rounded-lg bg-white' onClick={() => navigate(`/collage/${data._id}`)}>
             <img src={"https://www.festivalsfromindia.com/wp-content/uploads/2022/04/VJTI-Mumbai.-Photo-VJTI-Mumbai-1_11zon.jpg"}

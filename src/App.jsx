@@ -12,6 +12,8 @@ import CollegesTable from "./Components/Admin/CollegesTable";
 import PocTable from "./Components/Admin/PocTable";
 import AdminHome from "./Components/Admin/AdminHome";
 import OneCollege from "./Components/student/OneCollege";
+import Image from "./Components/test/Image";
+
 function App() {
   return (
     <>
@@ -28,6 +30,7 @@ function App() {
               </Route>
               <Route path="/Login" element={<LoginForm />}></Route>
               <Route path="/SignUp" element={<SignUp />}></Route>
+              <Route path="/image" element={<Image />}></Route>
               <Route path="/" element={<Home />}>
                 <Route index element={<MainContent />} />
                 <Route path="/home" element={<MainContent />} />

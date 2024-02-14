@@ -59,6 +59,23 @@ function ProjectDetails() {
   const [deleteProject, setDeleteProject] = useState({});
   //for edit
   const [editProject, setEditProject] = useState();
+
+  const [img, setimg] = useState([]);
+
+  const setbase = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setMultimedia(reader.result);
+    };
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    setbase(file);
+    console.log(file);
+  };
+
   const handleRowsPerPageChange = (event) => {
     console.log("mypagesize", event.target.value);
     setLoading(true);
@@ -74,6 +91,7 @@ function ProjectDetails() {
     setPagenumber(pgnum);
     console.log("this is newpage", pgnum);
   };
+
   const getAllProjects = async () => {
     console.log(userDetails);
     try {
@@ -94,6 +112,7 @@ function ProjectDetails() {
   };
   const handleAddProject = async (e) => {
     e.preventDefault();
+    const timestamp = new Date();
     try {
       const result = await axios.post(
         "http://localhost:8000/api/hod/addProject",
@@ -107,6 +126,7 @@ function ProjectDetails() {
           department: userDetails.allocated_department,
           type: selectedType,
           userType: "HOD",
+          timestamp: timestamp,
         },
         {
           headers: {
@@ -158,7 +178,7 @@ function ProjectDetails() {
     setIsModelOpen3(true);
     setTitle(item.title);
     setDescription(item.description);
-    setMultimedia(item.multimedia);
+    // setMultimedia(item.multimedia);
     setContributors(item.contributers);
     setLiveDemo(item.live_demo);
     setSelectedType(item.type);
@@ -202,8 +222,9 @@ function ProjectDetails() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/hod/searchProject?search=${search}`,{
-          allocated_department:userDetails.allocated_department
+        `http://localhost:8000/api/hod/searchProject?search=${search}`,
+        {
+          allocated_department: userDetails.allocated_department,
         }
       );
       setProjectList(response.data.projects);
@@ -215,6 +236,7 @@ function ProjectDetails() {
       // }, 2000);
     }
   };
+
   useEffect(() => {
     getAllProjects();
   }, [page, rowsPerPage, isModelOpen, isModelOpen2, isModelOpen3]);
@@ -319,7 +341,14 @@ function ProjectDetails() {
                             Read More...
                           </h1>
                         </TableCell>
-                        <TableCell> {item.multimedia} </TableCell>
+                        <TableCell>
+                          <a target="_blank" href={item.multimedia}>
+                            <img
+                              className="w-[50px] h-[50px]"
+                              src={item.multimedia}
+                            />{" "}
+                          </a>
+                        </TableCell>
                         <TableCell> {item.contributers} </TableCell>
                         <TableCell>
                           <Link
@@ -389,6 +418,12 @@ function ProjectDetails() {
                     </button>
                   </div>
                   <div className="p-4">
+                    <a href={currentRow.multimedia} target="_blank">
+                      <img
+                        src={currentRow.multimedia}
+                        className="rounded-md h-[200px]"
+                      />
+                    </a>
                     <div className="flex flex-col mt-2">
                       <h1 className="font-bold">Title</h1>
                       <div>{currentRow.title}</div>
@@ -499,10 +534,10 @@ function ProjectDetails() {
                       <div className="flex flex-col">
                         <label className="mt-5">Multimedia</label>
                         <input
-                          type="telephone"
+                          type="file"
                           className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
                           placeholder="Drop Multimedia"
-                          onChange={(e) => setMultimedia(e.target.value)}
+                          onChange={handleImageUpload}
                           required
                         />
                       </div>
@@ -686,17 +721,6 @@ function ProjectDetails() {
                       </div>
 
                       <div className="flex flex-col">
-                        <label className="mt-5">Multimedia</label>
-                        <input
-                          type="telephone"
-                          className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                          placeholder="Drop Multimedia"
-                          value={multimedia}
-                          onChange={(e) => setMultimedia(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="flex flex-col">
                         <label className="mt-5">Project Contributors</label>
                         <input
                           type="telephone"
@@ -718,7 +742,24 @@ function ProjectDetails() {
                           required
                         />
                       </div>
-
+                      <div className="flex flex-col">
+                        <label className="mt-5">Multimedia</label>
+                        <div className="flex flex-row items-center gap-2">
+                          {" "}
+                          <input
+                            type="file"
+                            className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
+                            placeholder="Drop Multimedia"
+                            onChange={handleImageUpload}
+                          />
+                          <a href={editProject.multimedia} target="_blank">
+                            <img
+                              src={editProject.multimedia}
+                              className="w-[80px] h-[80px] rounded-md"
+                            />
+                          </a>
+                        </div>
+                      </div>
                       <div className="flex flex-col py-2 justify-between gap-3">
                         <div className="flex gap-2 mt-10">
                           <Button

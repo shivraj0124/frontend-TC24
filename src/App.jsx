@@ -31,8 +31,6 @@ function App() {
                 <Route index element={<MainContent />} />
                 <Route path="/home" element={<MainContent />} />
                 <Route path="/college" element={<College />} />
-                <Route path="/profile" element={<MainContent />} />
-                <Route path="/collage/:id" element={<OneCollege />} />
               </Route>
               <Route path="/Admin" element={<AdminHome />}>
                 <Route path="/Admin/Dashboard" element={<Dashboard />}></Route>

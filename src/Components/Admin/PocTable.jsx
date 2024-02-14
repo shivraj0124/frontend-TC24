@@ -253,7 +253,12 @@ function PocTable() {
       </div>
       <div className=" mt-5 rounded">
         <Paper sx={{ width: "100%" }}>
-          <TableContainer sx={{ maxHeight: 550 }}>
+          <TableContainer sx={{
+              maxWidth: "100%",
+              maxHeight: "500px",
+              overflowX: "auto",
+              overflowY: "auto",
+            }}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>

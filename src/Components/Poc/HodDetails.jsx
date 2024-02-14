@@ -16,27 +16,26 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import themeHook from "../Context";
 function HodDetails() {
-  const { token } = themeHook();
+  const { token,userDetails } = themeHook();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [pagesize, setPagesize] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pocList, setPocList] = useState([]);
-  const [pocListCount, setPocListCount] = useState([]);
+  const [hodList, sethodList] = useState([]);
+  const [hodListCount, sethodListCount] = useState([]);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isModelOpen2, setIsModelOpen2] = useState(false);
   const [pocUserName, setPocUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNo, setMobileNO] = useState("");
-  const [college, setCollege] = useState();
-  const [collegeList, setCollegeList] = useState();
+  const [department, setdepartment] = useState();
+  const [dptList, setdptList] = useState();
   const [search, setSearch] = useState("");
-  const [collegeId, setDeletePocsetCollegeId] = useState();
+  const [departmentId, setdeleteHodsetdepartmentId] = useState();
   const [isModelOpen3, setIsModelOpen3] = useState(false);
-  const [editPoc, setEditPoc] = useState();
-  const [deletePoc, setDeletePoc] = useState();
+  const [editHod, seteditHod] = useState();
+  const [deleteHod, setdeleteHod] = useState();
   const handleRowsPerPageChange = (event) => {
     console.log("mypagesize", event.target.value);
     setLoading(true);
@@ -52,25 +51,27 @@ function HodDetails() {
     setPageNumber(pgnum);
     console.log("this is newpage", pgnum);
   };
-  const getAllPoc = async () => {
+  const getAllHod = async () => {
+    console.log(userDetails);
     setLoading(true);
     try {
       const result = await axios.post(
-        "http://localhost:8000/api/admin/getPocAdmin",
+        "http://localhost:8000/api/poc/getAllHodPoc",
         {
           page: page,
           rows: rowsPerPage,
+          college:userDetails.College
         }
       );
       console.log(result.data.data);
-      setPocList(result.data.data.data);
-      setPocListCount(result.data.data.totalColleges);
+      sethodList(result.data.data.data);
+      sethodListCount(result.data.data.totalHods);
       setLoading(false);
     } catch (err) {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
-  const handleAddPoc = async (e) => {
+  const handleAddHod = async (e) => {
     e.preventDefault();
     console.log(
       "POC Details",
@@ -78,17 +79,18 @@ function HodDetails() {
       password,
       email,
       mobileNo,
-      college,
+      department,
       token
     );
     try {
       const result = await axios.post(
-        "http://localhost:8000/api/admin/addPoc",
+        "http://localhost:8000/api/poc/addHOD",
         {
           email: email,
           mobileNo: mobileNo,
-          college: college,
-          userType: "admin",
+          userType: "poc",
+          allocated_college:userDetails.College,
+          allocated_department:department
         },
         {
           headers: {
@@ -117,7 +119,7 @@ function HodDetails() {
         }
       );
       console.log(response.data);
-      setPocList(response.data.poc);
+      sethodList(response.data.poc);
       setInterval(() => {
         setLoading(false);
       }, 2000);
@@ -127,21 +129,21 @@ function HodDetails() {
         setLoading(false);
       }, 2000);
     }
-    search.trim() === "" ? getAllPoc() : "";
+    search.trim() === "" ? getAllHod() : "";
   };
-  const handleDeletePocModal = async (id, name) => {
-    setDeletePoc({ id: id, name: name });
+  const handleDeleteHodModal = async (id, name) => {
+    setdeleteHod({ id: id, name: name });
     setIsModelOpen2(true);
   };
 
-  const handleDeletePoc = async (e) => {
+  const handleDeleteHod = async (e) => {
     e.preventDefault();
     try {
       const result = await axios.post(
-        "http://localhost:8000/api/admin/deletePOC",
+        "http://localhost:8000/api/poc/delete_HOD",
         {
-          poc_id: deletePoc.id,
-          userType: "admin",
+          hod_id: deleteHod.id,
+          userType: "poc",
         },
         {
           headers: {
@@ -160,37 +162,33 @@ function HodDetails() {
     setIsModelOpen2(false);
   };
 
-  const handleEditPocModal = async (id, name, email, mobileNo, college) => {
-    getAllColleges();
+  const handleEditHodModal = async (id,email, mobileNo) => {
+    getAllDptAddHod();
 
-    setEditPoc({
+    seteditHod({
       id: id,
-      name: name,
       email: email,
       mobileNo: mobileNo,
-      collegeId: college._id,
-      collegeName: college.name,
     });
 
-    console.log("college", college.name);
+  
     setEmail(email);
     setMobileNO(mobileNo);
     setIsModelOpen3(true);
   };
 
-  const handleEditPoc = async (e) => {
+  const handleEditHod = async (e) => {
     e.preventDefault();
     console.log(token, "tokennn");
 
     try {
       const result = await axios.post(
-        "http://localhost:8000/api/admin/editPoc",
+        "http://localhost:8000/api/poc/editHodPoc",
         {
-          id: editPoc.id,
+          id: editHod.id,
           email: email,
-          phone: mobileNo,
-          college: college === undefined ? editPoc.collegeId : college,
-          userType: "admin",
+          mobileNo: mobileNo,
+          userType: "poc",
         },
         {
           headers: {
@@ -209,25 +207,27 @@ function HodDetails() {
     setIsModelOpen3(false);
   };
 
-  const getAllColleges = async () => {
+  const getAllDptAddHod = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost:8000/api/college/getAllColleges"
+      const result = await axios.post(
+        "http://localhost:8000/api/dpt/getAllDptAddHod",{
+          college:userDetails.College
+        }
       );
       console.log(result.data.data);
-      setCollegeList(result.data.data.data);
+      setdptList(result.data.data.data);
     } catch (err) {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
   useEffect(() => {
-    getAllPoc();
+    getAllHod();
   }, [page, pagesize, pageNumber, isModelOpen, isModelOpen2, isModelOpen3]);
   return (
     <div className="flex flex-col w-full  h-[90vh] p-5">
       <div className="flex flex-row justify-between w-[100%]">
         <div>
-          <h1 className="text-lg font-semibold ">Poc List</h1>
+          <h1 className="text-lg font-semibold ">Hod List</h1>
         </div>
         <div className="flex flex-row gap-2 items-center">
           <input
@@ -244,16 +244,21 @@ function HodDetails() {
             }}
             onClick={() => {
               setIsModelOpen(true);
-              getAllColleges();
+              getAllDptAddHod();
             }}
           >
-            Add POC
+            Add HOD
           </Button>
         </div>
       </div>
       <div className=" mt-5 rounded">
         <Paper sx={{ width: "100%" }}>
-          <TableContainer sx={{ maxHeight: 550 }}>
+          <TableContainer sx={{
+              maxWidth: "100%",
+              maxHeight: "500px",
+              overflowX: "auto",
+              overflowY: "auto",
+            }}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
@@ -261,7 +266,7 @@ function HodDetails() {
                   <TableCell>Username</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Mobile No</TableCell>
-                  <TableCell>College Name</TableCell>
+                  <TableCell>department Name</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -273,7 +278,7 @@ function HodDetails() {
                     </TableCell>
                   </TableRow>
                 )}
-                {loading === false && !pocList?.length > 0 && (
+                {loading === false && !hodList?.length > 0 && (
                   <TableRow>
                     <TableCell
                       colSpan={9}
@@ -286,7 +291,7 @@ function HodDetails() {
                 )}
 
                 {!loading &&
-                  pocList?.map((item, index) => {
+                  hodList?.map((item, index) => {
                     return (
                       <TableRow key={index}>
                         <TableCell>
@@ -295,18 +300,16 @@ function HodDetails() {
                         <TableCell>{item.username}</TableCell>
                         <TableCell>{item.email}</TableCell>
                         <TableCell>{item.mobileNo}</TableCell>
-                        <TableCell>{item.College.name}</TableCell>
+                        <TableCell>{item.allocated_department?.name}</TableCell>
                         <TableCell>
                           <div className="flex flex-row gap-2">
                             <h2
                               className="text-blue-700 cursor-pointer"
                               onClick={() =>
-                                handleEditPocModal(
+                                handleEditHodModal(
                                   item._id,
-                                  item.username,
                                   item.email,
                                   item.mobileNo,
-                                  item.College
                                 )
                               }
                             >
@@ -315,7 +318,7 @@ function HodDetails() {
                             <h2
                               className="text-red-500 cursor-pointer"
                               onClick={() =>
-                                handleDeletePocModal(item._id, item.username)
+                                handleDeleteHodModal(item._id, item.username)
                               }
                             >
                               Delete
@@ -332,7 +335,7 @@ function HodDetails() {
             rowsPerPageOptions={[10, 25, 50, 100]}
             rowsPerPage={rowsPerPage}
             page={page}
-            count={pocListCount}
+            count={hodListCount}
             component="div"
             onPageChange={handlePageChange}
             onRowsPerPageChange={handleRowsPerPageChange}
@@ -347,7 +350,7 @@ function HodDetails() {
                   {/*header*/}
                   <div className="flex items-center justify-between p-3 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-xl font-semibold text-[#757575]">
-                      Add Poc
+                      Add HOD
                     </h3>
                     <button
                       className="  p-1 ml-auto bg-transparent border-0 text-[#757575] float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -356,7 +359,7 @@ function HodDetails() {
                       <Close />
                     </button>
                   </div>
-                  <form onSubmit={handleAddPoc}>
+                  <form onSubmit={handleAddHod}>
                     <div className="p-4">
                       <div className="flex flex-col">
                         <label className="mt-5">Email</label>
@@ -379,16 +382,16 @@ function HodDetails() {
                         />
                       </div>
                       <div className="flex flex-col">
-                        <label className="mt-5">College Name</label>
+                        <label className="mt-5">department Name</label>
                         <select
                           className="border-2 border-gray-300 rounded-md px-2 py-1 focus:outline-none placeholder:text-sm placeholder:text-gray-400"
                           onChange={(event) => {
-                            setCollege(event.target.value);
+                            setdepartment(event.target.value);
                           }}
                         >
-                          <option value="">Select College</option>
-                          {collegeList &&
-                            collegeList.map((item, index) => {
+                          <option value="">Select Department</option>
+                          {dptList &&
+                            dptList.map((item, index) => {
                               return (
                                 <option
                                   key={index + 1}
@@ -442,7 +445,7 @@ function HodDetails() {
                   {/*header*/}
                   <div className="flex items-center justify-between p-3 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-xl font-semibold text-[#757575]">
-                      Delete Poc
+                      Delete HOD
                     </h3>
                     <button
                       className="  p-1 ml-auto bg-transparent border-0 text-[#757575] float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -451,16 +454,16 @@ function HodDetails() {
                       <Close />
                     </button>
                   </div>
-                  <form onSubmit={handleDeletePoc}>
+                  <form onSubmit={handleDeleteHod}>
                     <div className="p-4">
                       <div className="flex flex-col py-4 justify-between gap-3">
                         <h1>Are you sure ?</h1>
                         <h3>
                           Do you want to delete{" "}
                           <span className="text-blue-400">
-                            {deletePoc.name}
+                            {deleteHod.name}
                           </span>{" "}
-                          Poc's record ?
+                         Hod's record ?
                         </h3>
                         <div className="flex gap-2 mt-10">
                           <Button
@@ -502,7 +505,7 @@ function HodDetails() {
                   {/*header*/}
                   <div className="flex items-center justify-between p-3 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-xl font-semibold text-[#757575]">
-                      Edit Poc
+                      Edit HOD
                     </h3>
                     <button
                       className="  p-1 ml-auto bg-transparent border-0 text-[#757575] float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -511,7 +514,7 @@ function HodDetails() {
                       <Close />
                     </button>
                   </div>
-                  <form onSubmit={handleEditPoc}>
+                  <form onSubmit={handleEditHod}>
                     <div className="p-4">
                       <div className="flex flex-col">
                         <label className="mt-5">Email</label>
@@ -537,29 +540,7 @@ function HodDetails() {
                         />
                       </div>
 
-                      <div className="flex flex-col">
-                        <label className="mt-5">College Name</label>
-                        <select
-                          className="border-2 border-gray-300 rounded-md px-2 py-1 focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                          onChange={(event) => {
-                            setCollege(event.target.value);
-                          }}
-                        >
-                          <option value="">{editPoc.collegeName}</option>
-                          {collegeList &&
-                            collegeList.map((item, index) => {
-                              return (
-                                <option
-                                  key={index + 1}
-                                  id={item._id}
-                                  value={item._id}
-                                >
-                                  {item.name}
-                                </option>
-                              );
-                            })}
-                        </select>
-                      </div>
+                
                       <div className="flex flex-col py-4 justify-between gap-3">
                         <div className="flex gap-2 mt-10">
                           <Button

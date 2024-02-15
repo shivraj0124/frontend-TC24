@@ -11,6 +11,10 @@ import College from "./Components/student/College";
 import CollegesTable from "./Components/Admin/CollegesTable";
 import PocTable from "./Components/Admin/PocTable";
 import AdminHome from "./Components/Admin/AdminHome";
+import OneCollege from "./Components/student/OneCollege";
+import Image from "./Components/test/Image";
+import Profile from "./Components/student/Profile";
+
 function App() {
   return (
     <>
@@ -27,10 +31,13 @@ function App() {
               </Route>
               <Route path="/Login" element={<LoginForm />}></Route>
               <Route path="/SignUp" element={<SignUp />}></Route>
+              <Route path="/image" element={<Image />}></Route>
               <Route path="/" element={<Home />}>
                 <Route index element={<MainContent />} />
                 <Route path="/home" element={<MainContent />} />
                 <Route path="/college" element={<College />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/collage/:id" element={<OneCollege />} />
               </Route>
             </Routes>
           </BrowserRouter>

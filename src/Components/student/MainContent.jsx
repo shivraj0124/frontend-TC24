@@ -7,6 +7,7 @@ import CollegeCard from './CollegeCard';
 import { IoIosSearch } from "react-icons/io";
 
 import DropDown from './DropDown';
+import MobileSidebar from './MobileSidebar';
 
 function MainContent() {
     const { sidebarvalue } = themeHook()
@@ -45,7 +46,8 @@ function MainContent() {
     const typearr = ['WEB', 'APP', 'hardware', 'software', 'AI', 'ML']
     return (
         <div className="w-full h-[90vh]  flex">
-            <div className='flex flex-col p-4 gap-4 w-full border overflow-y-auto h-[90vh]'>
+            <div className='flex flex-col p-4 gap-4 w-full border overflow-y-auto min-[900px]:h-[90vh]'>
+                {/* <MobileSidebar /> */}
                 <h1 className=' text-darkgreen font-semibold text-lg text-center'>Empowering Polytechnic Communities through Shared Knowledge: Building Bridges, Inspiring Innovation.</h1>
                 <section className='w-full'>
                     <img className=' bg-black rounded-md w-full h-[200px] object-cover'
@@ -56,8 +58,8 @@ function MainContent() {
                     <h1 className=' mx-2 font-semibold text-xl text-textgreen mb-2'>Projects</h1>
                     <div className=' flex px-2 py-1 justify-between rounded-m gap-4' >
                         <div className=' flex  gap-1 w-full'>
-                            <DropDown placeholder={"time"} data={arr} type={"time"} />
-                            <DropDown placeholder={"type"} data={typearr} type={"college"} />
+                            {/* <DropDown placeholder={"time"} data={arr} type={"time"} />
+                            <DropDown placeholder={"type"} data={typearr} type={"college"} /> */}
                         </div>
                         <form onSubmit={handleSubmit} className='flex h-9'>
                             <input type="text" placeholder="search" onChange={(e) => setsrach(e.target.value)} className=' w-auto min-[800px]:w-60 bg-white border h-full rounded-md px-4 focus:outline-none text-sm text-gray-600' />

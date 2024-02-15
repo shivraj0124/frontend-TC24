@@ -18,7 +18,7 @@ import OneCollege from "./Components/student/OneCollege";
 import DepartmentDetails from "./Components/Poc/DepartmentDetails";
 import HodHome from "./Components/Hod/HodHome";
 import ProjectDetails from "./Components/Hod/ProjectDetails";
-import OneCollege from "./Components/student/OneCollege";
+
 import Image from "./Components/test/Image";
 import Profile from "./Components/student/Profile";
 

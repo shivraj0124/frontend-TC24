@@ -15,25 +15,27 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import themeHook from "../Context";
-function CollegesTable() {
-  const { token } = themeHook();
+function HodDetails() {
+  const { token,userDetails } = themeHook();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [pagesize, setPagesize] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
-  const [collegeList, setCollegeList] = useState([]);
-  const [collegeListCount, setCollegeListCount] = useState([]);
+  const [hodList, sethodList] = useState([]);
+  const [hodListCount, sethodListCount] = useState([]);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isModelOpen2, setIsModelOpen2] = useState(false);
-  const [collegeName, setCollegeName] = useState("");
-  const [about, setAbout] = useState("");
-  const [address, setAddress] = useState("");
+  const [pocUserName, setPocUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobileNo, setMobileNO] = useState("");
+  const [department, setdepartment] = useState();
+  const [dptList, setdptList] = useState();
   const [search, setSearch] = useState("");
-  const [collegeId, setCollegeId] = useState();
+  const [departmentId, setdeleteHodsetdepartmentId] = useState();
   const [isModelOpen3, setIsModelOpen3] = useState(false);
-  const [editCollege, setEditCollege] = useState();
-
+  const [editHod, seteditHod] = useState();
+  const [deleteHod, setdeleteHod] = useState();
   const handleRowsPerPageChange = (event) => {
     console.log("mypagesize", event.target.value);
     setLoading(true);
@@ -49,35 +51,46 @@ function CollegesTable() {
     setPageNumber(pgnum);
     console.log("this is newpage", pgnum);
   };
-  const getAllColleges = async () => {
+  const getAllHod = async () => {
+    console.log(userDetails);
     setLoading(true);
     try {
       const result = await axios.post(
-        "http://localhost:8000/api/admin/getAllCollegesAdmin",
+        "http://localhost:8000/api/poc/getAllHodPoc",
         {
           page: page,
           rows: rowsPerPage,
+          college:userDetails.College
         }
       );
       console.log(result.data.data);
-      setCollegeList(result.data.data.data);
-      setCollegeListCount(result.data.data.totalColleges);
+      sethodList(result.data.data.data);
+      sethodListCount(result.data.data.totalHods);
       setLoading(false);
     } catch (err) {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
-  const handleAddCollege = async (e) => {
+  const handleAddHod = async (e) => {
     e.preventDefault();
-    console.log("College Details", collegeName, about, address, token);
+    console.log(
+      "POC Details",
+      pocUserName,
+      password,
+      email,
+      mobileNo,
+      department,
+      token
+    );
     try {
       const result = await axios.post(
-        "http://localhost:8000/api/admin/addCollege",
+        "http://localhost:8000/api/poc/addHOD",
         {
-          name: collegeName,
-          about: about,
-          address: address,
-          userType: "admin",
+          email: email,
+          mobileNo: mobileNo,
+          userType: "poc",
+          allocated_college:userDetails.College,
+          allocated_department:department
         },
         {
           headers: {
@@ -96,15 +109,17 @@ function CollegesTable() {
     setIsModelOpen(false);
   };
   const handleSearch = async (search) => {
+    console.log(search);
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/admin/searchCollege`,
+        `http://localhost:8000/api/admin/searchPoc`,
         {
           params: { search },
         }
       );
-      setCollegeList(response.data.faculties);
+      console.log(response.data);
+      sethodList(response.data.poc);
       setInterval(() => {
         setLoading(false);
       }, 2000);
@@ -114,21 +129,21 @@ function CollegesTable() {
         setLoading(false);
       }, 2000);
     }
+    search.trim() === "" ? getAllHod() : "";
   };
-  const handleDeleteCollegeModal = async (id, name) => {
-    setCollegeId({ id: id, name: name });
+  const handleDeleteHodModal = async (id, name) => {
+    setdeleteHod({ id: id, name: name });
     setIsModelOpen2(true);
   };
 
-  const handleDeleteCollege = async (e) => {
+  const handleDeleteHod = async (e) => {
     e.preventDefault();
-    console.log(collegeId.name);
     try {
       const result = await axios.post(
-        "http://localhost:8000/api/admin/deleteCollege",
+        "http://localhost:8000/api/poc/delete_HOD",
         {
-          college_id: collegeId.id,
-          userType: "admin",
+          hod_id: deleteHod.id,
+          userType: "poc",
         },
         {
           headers: {
@@ -146,25 +161,34 @@ function CollegesTable() {
     }
     setIsModelOpen2(false);
   };
-  const handleEditCollegeModal = async (id, name, about, address) => {
-    setEditCollege({ id: id, name: name, about: about, address: address });
-    setCollegeName(name);
-    setAbout(about);
-    setAddress(address);
+
+  const handleEditHodModal = async (id,email, mobileNo) => {
+    getAllDptAddHod();
+
+    seteditHod({
+      id: id,
+      email: email,
+      mobileNo: mobileNo,
+    });
+
+  
+    setEmail(email);
+    setMobileNO(mobileNo);
     setIsModelOpen3(true);
   };
-  const handleEditCollege = async (e) => {
+
+  const handleEditHod = async (e) => {
     e.preventDefault();
-    console.log(collegeName, about, address);
+    console.log(token, "tokennn");
+
     try {
       const result = await axios.post(
-        "http://localhost:8000/api/admin/editCollege",
+        "http://localhost:8000/api/poc/editHodPoc",
         {
-          id: editCollege.id,
-          name: collegeName,
-          about: about,
-          address: address,
-          userType: "admin",
+          id: editHod.id,
+          email: email,
+          mobileNo: mobileNo,
+          userType: "poc",
         },
         {
           headers: {
@@ -182,14 +206,28 @@ function CollegesTable() {
     }
     setIsModelOpen3(false);
   };
+
+  const getAllDptAddHod = async () => {
+    try {
+      const result = await axios.post(
+        "http://localhost:8000/api/dpt/getAllDptAddHod",{
+          college:userDetails.College
+        }
+      );
+      console.log(result.data.data);
+      setdptList(result.data.data.data);
+    } catch (err) {
+      toast.error(err.message); // Use err.message to get the error message
+    }
+  };
   useEffect(() => {
-    getAllColleges();
+    getAllHod();
   }, [page, pagesize, pageNumber, isModelOpen, isModelOpen2, isModelOpen3]);
   return (
     <div className="flex flex-col w-full  h-[90vh] p-5">
-      <div className="flex flex-row justify-between ">
+      <div className="flex flex-row justify-between w-[100%]">
         <div>
-          <h1 className="text-lg font-semibold ">College List</h1>
+          <h1 className="text-lg font-semibold ">Hod List</h1>
         </div>
         <div className="flex flex-row gap-2 items-center">
           <input
@@ -204,9 +242,12 @@ function CollegesTable() {
               backgroundColor: "#327c1c",
               height: "max-content",
             }}
-            onClick={() => setIsModelOpen(true)}
+            onClick={() => {
+              setIsModelOpen(true);
+              getAllDptAddHod();
+            }}
           >
-            Add College
+            Add HOD
           </Button>
         </div>
       </div>
@@ -222,9 +263,10 @@ function CollegesTable() {
               <TableHead>
                 <TableRow>
                   <TableCell>Sr. No</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>About</TableCell>
-                  <TableCell>Address</TableCell>
+                  <TableCell>Username</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Mobile No</TableCell>
+                  <TableCell>department Name</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -236,7 +278,7 @@ function CollegesTable() {
                     </TableCell>
                   </TableRow>
                 )}
-                {loading === false && !collegeList?.length > 0 && (
+                {loading === false && !hodList?.length > 0 && (
                   <TableRow>
                     <TableCell
                       colSpan={9}
@@ -249,34 +291,34 @@ function CollegesTable() {
                 )}
 
                 {!loading &&
-                  collegeList?.map((item, index) => {
+                  hodList?.map((item, index) => {
                     return (
                       <TableRow key={index}>
                         <TableCell>
                           {page * rowsPerPage + (index + 1)}
                         </TableCell>
-                        <TableCell>{item.name}</TableCell>
-                        <TableCell>{item.about}</TableCell>
-                        <TableCell>{item.address}</TableCell>
+                        <TableCell>{item.username}</TableCell>
+                        <TableCell>{item.email}</TableCell>
+                        <TableCell>{item.mobileNo}</TableCell>
+                        <TableCell>{item.allocated_department?.name}</TableCell>
                         <TableCell>
                           <div className="flex flex-row gap-2">
                             <h2
                               className="text-blue-700 cursor-pointer"
                               onClick={() =>
-                                handleEditCollegeModal(
+                                handleEditHodModal(
                                   item._id,
-                                  item.name,
-                                  item.about,
-                                  item.address
+                                  item.email,
+                                  item.mobileNo,
                                 )
                               }
                             >
-                              Edit
+                              Edit{" "}
                             </h2>
                             <h2
                               className="text-red-500 cursor-pointer"
                               onClick={() =>
-                                handleDeleteCollegeModal(item._id, item.name)
+                                handleDeleteHodModal(item._id, item.username)
                               }
                             >
                               Delete
@@ -293,7 +335,7 @@ function CollegesTable() {
             rowsPerPageOptions={[10, 25, 50, 100]}
             rowsPerPage={rowsPerPage}
             page={page}
-            count={collegeListCount}
+            count={hodListCount}
             component="div"
             onPageChange={handlePageChange}
             onRowsPerPageChange={handleRowsPerPageChange}
@@ -308,7 +350,7 @@ function CollegesTable() {
                   {/*header*/}
                   <div className="flex items-center justify-between p-3 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-xl font-semibold text-[#757575]">
-                      Add College
+                      Add HOD
                     </h3>
                     <button
                       className="  p-1 ml-auto bg-transparent border-0 text-[#757575] float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -317,37 +359,50 @@ function CollegesTable() {
                       <Close />
                     </button>
                   </div>
-                  <form onSubmit={handleAddCollege}>
+                  <form onSubmit={handleAddHod}>
                     <div className="p-4">
                       <div className="flex flex-col">
-                        <label className="mt-5">College Name</label>
+                        <label className="mt-5">Email</label>
                         <input
-                          type="text"
+                          type="email"
+                          className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
+                          placeholder="Enter Email"
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <label className="mt-5">Mobile No.</label>
+                        <input
+                          type="telephone"
+                          className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
+                          placeholder="Enter Mobile No"
+                          onChange={(e) => setMobileNO(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <label className="mt-5">department Name</label>
+                        <select
                           className="border-2 border-gray-300 rounded-md px-2 py-1 focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                          placeholder="Enter College Name"
-                          onChange={(e) => setCollegeName(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <label className="mt-5">About</label>
-                        <input
-                          type="telephone"
-                          className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                          placeholder="About The College"
-                          onChange={(e) => setAbout(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <label className="mt-5">Address</label>
-                        <input
-                          type="telephone"
-                          className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                          placeholder="Enter College Address"
-                          onChange={(e) => setAddress(e.target.value)}
-                          required
-                        />
+                          onChange={(event) => {
+                            setdepartment(event.target.value);
+                          }}
+                        >
+                          <option value="">Select Department</option>
+                          {dptList &&
+                            dptList.map((item, index) => {
+                              return (
+                                <option
+                                  key={index + 1}
+                                  id={item._id}
+                                  value={item._id}
+                                >
+                                  {item.name}
+                                </option>
+                              );
+                            })}
+                        </select>
                       </div>
                       <div className="flex flex-col py-4 justify-between gap-3">
                         <div className="flex gap-2 mt-10">
@@ -390,7 +445,7 @@ function CollegesTable() {
                   {/*header*/}
                   <div className="flex items-center justify-between p-3 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-xl font-semibold text-[#757575]">
-                      Delete College
+                      Delete HOD
                     </h3>
                     <button
                       className="  p-1 ml-auto bg-transparent border-0 text-[#757575] float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -399,16 +454,16 @@ function CollegesTable() {
                       <Close />
                     </button>
                   </div>
-                  <form onSubmit={handleDeleteCollege}>
+                  <form onSubmit={handleDeleteHod}>
                     <div className="p-4">
                       <div className="flex flex-col py-4 justify-between gap-3">
                         <h1>Are you sure ?</h1>
                         <h3>
                           Do you want to delete{" "}
                           <span className="text-blue-400">
-                            {collegeId.name}
+                            {deleteHod.name}
                           </span>{" "}
-                          college's records ?
+                         Hod's record ?
                         </h3>
                         <div className="flex gap-2 mt-10">
                           <Button
@@ -450,7 +505,7 @@ function CollegesTable() {
                   {/*header*/}
                   <div className="flex items-center justify-between p-3 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-xl font-semibold text-[#757575]">
-                      Edit College
+                      Edit HOD
                     </h3>
                     <button
                       className="  p-1 ml-auto bg-transparent border-0 text-[#757575] float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -459,41 +514,33 @@ function CollegesTable() {
                       <Close />
                     </button>
                   </div>
-                  <form onSubmit={handleEditCollege}>
+                  <form onSubmit={handleEditHod}>
                     <div className="p-4">
                       <div className="flex flex-col">
-                        <label className="mt-5">College Name</label>
+                        <label className="mt-5">Email</label>
                         <input
-                          type="text"
-                          className="border-2 border-gray-300 rounded-md px-2 py-1 focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                          placeholder="Enter College Name"
-                          value={collegeName}
-                          onChange={(e) => setCollegeName(e.target.value)}
+                          type="email"
+                          className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
+                          placeholder="Enter Email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
                           required
                         />
                       </div>
+
                       <div className="flex flex-col">
-                        <label className="mt-5">About</label>
+                        <label className="mt-5">Mobile No.</label>
                         <input
                           type="telephone"
                           className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                          placeholder="About The College"
-                          value={about}
-                          onChange={(e) => setAbout(e.target.value)}
+                          placeholder="Enter Mobile No"
+                          value={mobileNo}
+                          onChange={(e) => setMobileNO(e.target.value)}
                           required
                         />
                       </div>
-                      <div className="flex flex-col">
-                        <label className="mt-5">Address</label>
-                        <input
-                          type="telephone"
-                          className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                          placeholder="Enter College Address"
-                          value={address}
-                          onChange={(e) => setAddress(e.target.value)}
-                          required
-                        />
-                      </div>
+
+                
                       <div className="flex flex-col py-4 justify-between gap-3">
                         <div className="flex gap-2 mt-10">
                           <Button
@@ -531,4 +578,4 @@ function CollegesTable() {
   );
 }
 
-export default CollegesTable;
+export default HodDetails;

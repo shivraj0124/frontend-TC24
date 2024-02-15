@@ -5,7 +5,8 @@ import themeHook from "../Context";
 import { Link } from "react-router-dom";
 import { FiUserCheck } from "react-icons/fi";
 import { LuSchool2 } from "react-icons/lu";
-
+import { LiaUserEditSolid } from "react-icons/lia";
+import { BsBuildings } from "react-icons/bs";
 function Sidebar({ data }) {
   const { sidebarvalue, setsidebarvalue } = themeHook();
   const [sidebarValue2, setSidebarValue2] = useState("Dashboard");
@@ -20,7 +21,7 @@ function Sidebar({ data }) {
     <div className=" flex flex-col border w-full p-4 h-full justify-between">
       <ul className="flex flex-col w-full gap-2">
         <Link
-          to={"/Admin/Dashboard"}
+          to={"/POC/Dashboard"}
           className={` ${
             sidebarValue2 == "Dashboard" ? " bg-[#f5f5f5] text-textgreen" : ""
           } hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`}
@@ -34,9 +35,9 @@ function Sidebar({ data }) {
         </Link>
 
         <Link
-          to={"/Admin/CollegeDetails"}
+          to={"/POC/DepartmentDetails"}
           className={` ${
-            sidebarValue2 == "College Details"
+            sidebarValue2 == "Departments Details"
               ? " bg-[#f5f5f5] text-textgreen"
               : ""
           } hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`}
@@ -44,25 +45,22 @@ function Sidebar({ data }) {
         >
           <div className=" flex  items-center">
             {" "}
-            <LuSchool2 size={22} className="" />
+            <BsBuildings size={22} className="" />
           </div>
-          <div>College Details</div>
+          <div>Departments Details</div>
         </Link>
-
         <Link
-          to={"/Admin/PocDetails"}
+          to={"/POC/HodDetails"}
           className={` ${
-            sidebarValue2 == "Poc Details"
-              ? "  bg-[#f5f5f5] text-textgreen"
-              : ""
+            sidebarValue2 == "Hod Details" ? " bg-[#f5f5f5] text-textgreen" : ""
           } hover:bg-[#f5f5f5] cursor-pointer grid grid-cols-[auto_1fr] gap-4 px-4 py-2  font-semibold  rounded-lg`}
           onClick={handleItemClick}
         >
           <div className=" flex  items-center">
             {" "}
-            <FiUserCheck size={22} className="  " />
+            <LiaUserEditSolid size={22} className="" />
           </div>
-          <div>Poc Details</div>
+          <div>Hod Details</div>
         </Link>
       </ul>
       <div className=" flex flex-col gap-1 bg-bgwhite rounded-lg p-3 mb-10">
@@ -70,7 +68,7 @@ function Sidebar({ data }) {
           <FaUserCircle className=" text-darkgreen" size={40}></FaUserCircle>
 
           <section>
-            <p className=" font-semibold text-lg">Admin</p>
+            <p className=" font-semibold text-lg">POC</p>
           </section>
         </section>
         <button className=" bg-buttongreen bg-opacity-30 w-full text-green-600 px-4 py-[5px] font-semibold rounded-full mt-5">

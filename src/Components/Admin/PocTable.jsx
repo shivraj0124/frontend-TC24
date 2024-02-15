@@ -127,7 +127,7 @@ function PocTable() {
         setLoading(false);
       }, 2000);
     }
-    search.trim() === "" ? getAllPoc() :''
+    search.trim() === "" ? getAllPoc() : "";
   };
   const handleDeletePocModal = async (id, name) => {
     setDeletePoc({ id: id, name: name });
@@ -253,7 +253,12 @@ function PocTable() {
       </div>
       <div className=" mt-5 rounded">
         <Paper sx={{ width: "100%" }}>
-          <TableContainer sx={{ maxHeight: 550 }}>
+          <TableContainer sx={{
+              maxWidth: "100%",
+              maxHeight: "500px",
+              overflowX: "auto",
+              overflowY: "auto",
+            }}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>

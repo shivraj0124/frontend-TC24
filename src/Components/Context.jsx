@@ -8,7 +8,11 @@ export const ContextProvider = ({ children }) => {
   const [sidebarvalue, setsidebarvalue] = useState("Home");
   const [filtertime, setfiltertime] = useState("latest");
   const [filterbycollge, setfilterbycollge] = useState("all");
-
+  const storedUserDetails = localStorage.getItem("userDetails");
+  const [userDetails, setUserDetails] = useState(
+    storedUserDetails ? JSON.parse(storedUserDetails) : null
+  );
+  console.log(userDetails);
   const value = {
     findForm,
     setFindForm,
@@ -19,7 +23,9 @@ export const ContextProvider = ({ children }) => {
     setfiltertime,
     filtertime,
     filterbycollge,
-    setfilterbycollge
+    setfilterbycollge,
+    userDetails,
+    setUserDetails,
   };
   useEffect(() => {
     const tokenFromCookie = Cookies.get("token");
@@ -27,7 +33,7 @@ export const ContextProvider = ({ children }) => {
       setToken(tokenFromCookie);
       console.log(tokenFromCookie);
     }
-  }, [])
+  }, []);
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };

@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 import { GoProjectSymlink } from "react-icons/go";
 
 function Sidebar({ data }) {
-  const { sidebarvalue, setsidebarvalue } = themeHook();
-
+  const { sidebarvalue, setsidebarvalue, userDetails } = themeHook();
+  console.log(userDetails, "dddd");
   const handleItemClick = (e) => {
     const value = e.target.textContent.trim();
     setsidebarvalue(value);
@@ -107,7 +107,7 @@ function Sidebar({ data }) {
         <section className=" flex gap-2 justify-center items-center">
           <FaUserCircle className=" text-darkgreen" size={40}></FaUserCircle>
           <section>
-            <p className=" font-semibold text-lg">Yash Mulik</p>
+            <p className=" font-semibold text-lg">{userDetails?.username}</p>
           </section>
         </section>
         <p className=" text-center text-xs text-gray-500">

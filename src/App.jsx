@@ -24,6 +24,7 @@ import HodDashboard from "./Components/Hod/HodDashboard";
 import StudentProjects from "./Components/student/StudentProjects";
 import Image from "./Components/test/Image";
 import Profile from "./Components/student/Profile";
+import OneProject from "./Components/student/OneProject";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/college" element={<College />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/collage/:id" element={<OneCollege />} />
+                <Route path="/project/:id" element={<OneProject />} />
                 <Route path="/StudentProjects" element={<StudentProjects />} />
               </Route>
               <Route path="/Admin" element={<AdminHome />}>

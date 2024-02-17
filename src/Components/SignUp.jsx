@@ -4,7 +4,11 @@ import signUpImage from "../assets/signUp.png";
 import axios from "axios";
 import toast from "react-hot-toast";
 import themeHook from "./Context";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  UNSAFE_ViewTransitionContext,
+  useNavigate,
+} from "react-router-dom";
 import Button from "@mui/material/Button";
 function SignUp() {
   const { findForm, setFindForm } = themeHook();
@@ -20,6 +24,8 @@ function SignUp() {
   const validateFullName = (name) => /^[a-zA-Z\s]*$/.test(name);
   const validateMobile = (number) => /^\d{10}$/.test(number);
   const validatePassword = (pass) => pass.length >= 8;
+  const [showdept, setshowdept] = useState(false);
+  const [dept, setdepts] = useState([]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +50,7 @@ function SignUp() {
         email: email,
         userType: "student",
         mobileNo: mobile,
-        allocated_college:selectedCollege
+        allocated_college: selectedCollege,
       });
       console.log(result);
       if (result.data.data.status === 200) {
@@ -70,6 +76,21 @@ function SignUp() {
       );
       console.log(result.data.data);
       setCollegeList(result.data.data.data);
+    } catch (err) {
+      toast.error(err.message); // Use err.message to get the error message
+    }
+  };
+
+  const getdept = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:8000/api/auth/getDepartment",
+        {
+          college_id: selectedCollege,
+        }
+      );
+      console.log(result.data);
+      setdepts();
     } catch (err) {
       toast.error(err.message); // Use err.message to get the error message
     }
@@ -128,6 +149,8 @@ function SignUp() {
                   value={selectedCollege}
                   onChange={(event) => {
                     setSelectedCollege(event.target.value);
+                    setshowdept(true);
+                    getdept();
                   }}
                 >
                   <option value="">Select Your College</option>
@@ -141,6 +164,32 @@ function SignUp() {
                     })}
                 </select>
               </div>
+              {showdept && (
+                <div className="flex flex-col">
+                  <label className="mt-5">Select Department</label>
+                  <select
+                    className="border-2 border-gray-300 rounded-md px-2 py-1 focus:outline-none placeholder:text-sm placeholder:text-gray-400"
+                    value={selectedCollege}
+                    onChange={(event) => {
+                      setSelectedCollege(event.target.value);
+                    }}
+                  >
+                    <option value="">Select Your College</option>
+                    {collegeList &&
+                      collegeList.map((item, index) => {
+                        return (
+                          <option
+                            key={index + 1}
+                            id={item._id}
+                            value={item._id}
+                          >
+                            {item.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                </div>
+              )}
             </div>
             <div className="mb-5">
               <div className="flex flex-col">

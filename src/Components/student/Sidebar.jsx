@@ -35,6 +35,7 @@ function Sidebar({ data }) {
       localStorage.removeItem("userType")
       if (token) {
         Cookies.remove("token");
+        setToken("")
       }
       toast.success("Logout Successfully");
       window.location.reload();

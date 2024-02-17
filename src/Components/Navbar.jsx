@@ -2,8 +2,10 @@ import React from "react";
 import themeHook from "./Context";
 import { FaUserCircle } from "react-icons/fa";
 import Button from "@mui/material/Button";
+import {useNavigate} from "react-router-dom"
 function Navbar() {
   const { userDetails } = themeHook();
+  const navigate = useNavigate()
   return (
     <div className="flex flex-row bg-white px-10 py-3 justify-between border-b-2 border-gray-300 sticky top-0">
       <div>
@@ -17,6 +19,7 @@ function Navbar() {
             style={{
               backgroundColor: "#22c55e",
             }}
+            onClick={()=>navigate("/Login")}
           >
             Login
           </Button>

@@ -21,6 +21,10 @@ function New_login() {
             console.log(response.data.data.token);
             setUserDetails(response.data.data.existuser)
             Cookies.set("token", response.data.data.existuser)
+            localStorage.setItem(
+                "userDetails",
+                JSON.stringify(response.data.data.existuser)
+              );
             setToken(response.data.data.token)
             console.log(response.data.data.existuser.userType);
             if (response.data.data.existuser.userType === "student") {

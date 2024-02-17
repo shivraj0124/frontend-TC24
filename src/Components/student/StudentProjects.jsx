@@ -35,37 +35,37 @@ function StudentProjects() {
   };
   const handleAddProject = async (e) => {
     e.preventDefault();
-    try{
-    const result = axios.post(
-      "http://localhost:8000/api/project/addProjectByStudent",
-      {
-        title: title,
-        description: description,
-        multimedia: multimedia,
-        contributors: contributors,
-        liveDemo: liveDemo,
-        codeLink: codeLink,
-        type: selectedType,
-        allocated_college: userDetails.allocated_college,
-        created_By:userDetails._id,
-        allocated_department:userDetails.allocated_department
+    try {
+      const result = axios.post(
+        "http://localhost:8000/api/project/addProjectByStudent",
+        {
+          title: title,
+          description: description,
+          multimedia: multimedia,
+          contributors: contributors,
+          liveDemo: liveDemo,
+          codeLink: codeLink,
+          type: selectedType,
+          allocated_college: userDetails.allocated_college,
+          created_By: userDetails._id,
+          allocated_department: userDetails.allocated_department
+        }
+      );
+      if (result?.data?.data?.status) {
+        toast.success(result?.data?.data?.msg);
+      } else {
+        toast.error(result?.data?.data?.msg);
       }
-    );
-    if (result?.data?.data?.status) {
-      toast.success(result?.data?.data?.msg);
-    } else {
-      toast.error(result?.data?.data?.msg);
+      setIsModelOpen(false);
+    } catch (err) {
+      toast.error(err.message); // Use err.message to get the error message
     }
-    setIsModelOpen(false);
-  }catch (err) {
-    toast.error(err.message); // Use err.message to get the error message
-  }
   };
-  const getAllProjects =async ()=>{
-      try{
-        
-      }
-  }
+  // const getAllProjects =async ()=>{
+  //     try{
+
+  //     }
+  // }
   return (
     <div className="w-full flex h-[90vh]">
       <div className=" flex flex-col p-2 w-full h-[90vh] overflow-y-auto">

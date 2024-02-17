@@ -6,7 +6,9 @@ import toast from "react-hot-toast";
 import themeHook from "./Context";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+
 function SignUp() {
+  
   const { findForm, setFindForm } = themeHook();
   const [fullName, setFullName] = useState("");
   const [mobile, setMobile] = useState("");

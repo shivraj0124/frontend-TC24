@@ -4,12 +4,12 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 function StudentLogin() {
   const { findForm, setToken, setUserDetails } = themeHook();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [cookies, setCookie] = useCookies(["token"]);
+  // const [cookies, setCookie] = useCookies(["token"]);
   const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,7 +22,8 @@ function StudentLogin() {
       if (result.data.data.status === true) {
         toast.success(result.data.data.msg);
         console.log("token", result.data.data.token);
-        setCookie("token", result.data.data.token, { path: "/" });
+        // setCookie("token", result.data.data.token, { path: "/" });
+        Cookies.set("token",result.data.data.token);
         localStorage.setItem(
           "userDetails",
           JSON.stringify(result.data.data.existuser)

@@ -39,7 +39,7 @@ function ProjectCard2({ data }) {
           src={
             "https://i0.wp.com/technologysalon.org/wp-content/uploads/2019/04/artificial-intelligence.jpg?resize=640%2C429"
           }
-          className="w-full min-[580px]:w-40  h-40 rounded-xl object-cover"
+          className="w-full min-[580px]:w-40  h-48 rounded-xl object-cover"
         />
         <div className=" flex gap-2 flex-col justify-start ">
           <div>

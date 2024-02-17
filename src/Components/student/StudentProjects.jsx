@@ -52,7 +52,7 @@ function StudentProjects() {
           type: selectedType,
           allocated_college: userDetails.allocated_college,
           created_By: userDetails._id,
-          allocated_department: userDetails.allocated_department
+          allocated_department: userDetails.allocated_department,
         }
       );
       if (result?.data?.data?.status) {
@@ -68,14 +68,11 @@ function StudentProjects() {
   const getAllProjects = async () => {
     console.log(userDetails.allocated_college, "js");
     try {
-      const result = await axios.post(
-        "http://localhost:8000/api/auth/getAllProjects",
-        {
-          allocated_college: userDetails.allocated_college,
-        }
+      const result = await axios.get(
+        "http://localhost:8000/api/auth/getAllProjects"
       );
       setProjectList(result.data.data.data);
-      console.log(result.data.data.data);
+      console.log(result.data);
     } catch (err) {
       toast.error(err.message); // Use err.message to get the error message
     }

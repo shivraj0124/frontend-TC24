@@ -19,17 +19,7 @@ function OneProject() {
     //console.log(projectdata);
   };
 
-  // const getcollege = async () => {
-  //     const res = await axios.post("http://localhost:8000/api/college/onecollge", { college: projectdata.allocated_college });
-  //     console.log(res.data.data);
-  //     setcollegename(res?.data?.data?.name)
-  // }
 
-  // const getdpt = async () => {
-  //     const res = await axios.post("http://localhost:8000/api/dpt/onedpt", { dpt: projectdata.allocated_department });
-  //     console.log(res?.data?.data?.data);
-  //     setDptgename(res?.data?.data?.data)
-  // }
 
   useEffect(() => {
     getProjectdata();

@@ -16,8 +16,8 @@ function LoginForm() {
           <button
             className={
               findForm === "Student"
-                ? "p-2 px-4 drop-shadow-lg bg-blue-600 text-white basis-1/4 rounded-md max-md:w-[100%]"
-                : "p-2 px-4 bg-white text-blue-500 drop-shadow-lg hover:bg-blue-500 hover:text-white basis-1/4 rounded-md max-md:w-[100%]"
+                ? "p-2 px-4 drop-shadow-lg bg-green-600 text-white basis-1/4 rounded-md max-md:w-[100%]"
+                : "p-2 px-4 bg-white text-blue-500 drop-shadow-lg hover:bg-green-600 hover:text-white basis-1/4 rounded-md max-md:w-[100%]"
             }
             onClick={() => setFindForm("Student")}
           >
@@ -26,8 +26,8 @@ function LoginForm() {
           <button
             className={
               findForm === "Admin"
-                ? "p-2 px-4 drop-shadow-lg bg-blue-600 text-white basis-1/4 rounded-md max-md:w-[100%]"
-                : "p-2 px-4 bg-white text-blue-500 drop-shadow-lg hover:bg-blue-500 hover:text-white basis-1/4 rounded-md max-md:w-[100%]"
+                ? "p-2 px-4 drop-shadow-lg bg-green-600 text-white basis-1/4 rounded-md max-md:w-[100%]"
+                : "p-2 px-4 bg-white text-blue-500 drop-shadow-lg hover:bg-green-600 hover:text-white basis-1/4 rounded-md max-md:w-[100%]"
             }
             onClick={() => setFindForm("Admin")}
           >
@@ -36,8 +36,8 @@ function LoginForm() {
           <button
             className={
               findForm === "POC"
-                ? "p-2 px-4 drop-shadow-lg bg-blue-600 text-white basis-1/4 rounded-md max-md:w-[100%]"
-                : "p-2 px-4 bg-white text-blue-500 drop-shadow-lg hover:bg-blue-500 hover:text-white basis-1/4 rounded-md max-md:w-[100%]"
+                ? "p-2 px-4 drop-shadow-lg bg-green-600 text-white basis-1/4 rounded-md max-md:w-[100%]"
+                : "p-2 px-4 bg-white text-blue-500 drop-shadow-lg hover:bg-green-600 hover:text-white basis-1/4 rounded-md max-md:w-[100%]"
             }
             onClick={() => setFindForm("POC")}
           >
@@ -46,8 +46,8 @@ function LoginForm() {
           <button
             className={
               findForm === "HOD"
-                ? "p-2 px-4 drop-shadow-lg bg-blue-600 text-white basis-1/4 rounded-md max-md:w-[100%]"
-                : "p-2 px-4 bg-white text-blue-500 drop-shadow-lg hover:bg-blue-500 hover:text-white basis-1/4 rounded-md max-md:w-[100%]"
+                ? "p-2 px-4 drop-shadow-lg bg-green-600 text-white basis-1/4 rounded-md max-md:w-[100%]"
+                : "p-2 px-4 bg-white text-blue-500 drop-shadow-lg hover:bg-green-600 hover:text-white basis-1/4 rounded-md max-md:w-[100%]"
             }
             onClick={() => setFindForm("HOD")}
           >
@@ -65,20 +65,23 @@ function LoginForm() {
           )}
         </div>
 
-        {findForm == "Student" ? 
+        {findForm == "Student" ? (
           <div>
-          <h2>
-            Don't have an account ?
-            <Link
-              className="cursor-pointer text-blue-500"
-              onClick={() => setFindForm("Student")}
-              to="/SignUp"
-            >
-              {" "}
-              Register
-            </Link>
-          </h2>
-        </div> :""}
+            <h2>
+              Don't have an account ?
+              <Link
+                className="cursor-pointer text-blue-500"
+                onClick={() => setFindForm("Student")}
+                to="/SignUp"
+              >
+                {" "}
+                Register
+              </Link>
+            </h2>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

@@ -74,7 +74,7 @@ function StudentLogin() {
           variant="contained"
           type="submit"
           style={{
-            backgroundColor: "#1d4ed8",
+            backgroundColor: "#22c55e",
           }}
         >
           Login

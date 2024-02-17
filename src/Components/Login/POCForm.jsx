@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 function POCForm() {
-  const { findForm ,setUserDetails,setToken} = themeHook();
+  const { findForm, setUserDetails, setToken } = themeHook();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [cookies, setCookie] = useCookies(["token"]);
@@ -28,9 +28,12 @@ function POCForm() {
         console.log("token", result.data.data.token);
         setCookie("token", result.data.data.token, { path: "/" });
         console.log(result.data.data.pocDetails);
-        localStorage.setItem("userDetails", JSON.stringify(result.data.data.pocDetails));
+        localStorage.setItem(
+          "userDetails",
+          JSON.stringify(result.data.data.pocDetails)
+        );
         setToken(result.data.data.token);
-        setUserDetails(result.data.data.pocDetails)
+        setUserDetails(result.data.data.pocDetails);
         navigate("/POC/Dashboard");
       } else {
         toast(result.data.data.msg, {
@@ -64,7 +67,7 @@ function POCForm() {
           required
         />
         <br />
-        <button className="mt-5 py-2 px-5 bg-blue-600 rounded-lg text-white cursor-pointer hover:bg-blue-500">
+        <button className="mt-5 py-2 px-5 bg-[#22c55e] rounded-lg text-white cursor-pointer hover:bg-blue-500">
           Login
         </button>
       </form>

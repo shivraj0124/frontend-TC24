@@ -5,7 +5,11 @@ import { PiStudent } from "react-icons/pi";
 import { LiaUserEditSolid } from "react-icons/lia";
 import LineChartTest from "./LineChartTest";
 import axios from "axios";
-import CountUp from 'react-countup'
+import CountUp from "react-countup";
+import Bar from "../Charts/Chart";
+import { AreaChart } from "recharts";
+import Area from "../Charts/Ap";
+import Ap from "../Charts/Ap";
 function Dashboard() {
   const [data, setData] = useState();
   const getTotalCount = async () => {
@@ -33,7 +37,7 @@ function Dashboard() {
         <div className="border-2 border-gray-300 bg=[#f5f5f5] flex flex-row justify-between items-center p-4 rounded-md ">
           <div className="flex flex-col gap-2">
             <h1 className="text-4xl font-bold text-darkgreen">
-            <CountUp delay={2} end={data?.totalCountCollege} />
+              <CountUp delay={2} end={data?.totalCountCollege} />
             </h1>
             <h1 className="text-xl font-bold ">Colleges</h1>
           </div>
@@ -44,7 +48,7 @@ function Dashboard() {
         <div className="border-2 border-gray-300 bg=[#f5f5f5] flex flex-row justify-between items-center p-4 rounded-md ">
           <div className="flex flex-col gap-2">
             <h1 className="text-4xl font-bold text-darkgreen">
-            <CountUp delay={2} end={data?.totalCountPoc} />
+              <CountUp delay={2} end={data?.totalCountPoc} />
             </h1>
             <h1 className="text-xl font-bold ">Poc's</h1>
           </div>
@@ -66,8 +70,7 @@ function Dashboard() {
         <div className="border-2 border-gray-300 bg=[#f5f5f5] flex flex-row justify-between items-center p-4 rounded-md ">
           <div className="flex flex-col gap-2">
             <h1 className="text-4xl font-bold text-darkgreen">
-              
-              <CountUp delay={2} end={data?.totalCountStudents}/>
+              <CountUp delay={2} end={data?.totalCountStudents} />
             </h1>
             <h1 className="text-xl font-bold ">Students</h1>
           </div>
@@ -75,7 +78,7 @@ function Dashboard() {
             <PiStudent className="text-darkgreen" size={60} />
           </div>
         </div>
-      </div> 
+      </div>
       <div className="flex flex-row w-full mt-10 border-2">
         {/* <div className="flex flex-col gap-10 w-full">
           <div className="border-2 border-gray-300 bg=[#f5f5f5] flex flex-row justify-between items-center p-4 rounded-md ">
@@ -97,8 +100,13 @@ function Dashboard() {
             </div>
           </div> 
   </div> */}
-        <div className="w-[100%]">
-          <LineChartTest />
+        <div className="w-[100%] flex justify-start  p-4">
+          <Bar
+            clg={data?.totalCountCollege}
+            poc={data?.totalCountPoc}
+            hod={data?.totalCountHod}
+          />
+          <Ap />
         </div>
       </div>
     </div>

@@ -22,6 +22,9 @@ import CollegeInfo from "./Components/Poc/CollegeInfo";
 import PocDashboard from "./Components/Poc/PocDashboard";
 import HodDashboard from "./Components/Hod/HodDashboard";
 import StudentProjects from "./Components/student/StudentProjects";
+import Image from "./Components/test/Image";
+import Profile from "./Components/student/Profile";
+
 function App() {
   return (
     <>
@@ -31,10 +34,13 @@ function App() {
             <Routes>
               <Route path="/Login" element={<LoginForm />}></Route>
               <Route path="/SignUp" element={<SignUp />}></Route>
+              <Route path="/image" element={<Image />}></Route>
               <Route path="/" element={<Home />}>
                 <Route index element={<MainContent />} />
                 <Route path="/home" element={<MainContent />} />
                 <Route path="/college" element={<College />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/collage/:id" element={<OneCollege />} />
                 <Route path="/StudentProjects" element={<StudentProjects />} />
               </Route>
               <Route path="/Admin" element={<AdminHome />}>
@@ -65,6 +71,7 @@ function App() {
                   path="/Hod/Projects"
                   element={<ProjectDetails />}
                 ></Route>
+
               </Route>
             </Routes>
           </BrowserRouter>

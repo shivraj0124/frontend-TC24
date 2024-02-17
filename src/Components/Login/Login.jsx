@@ -64,7 +64,9 @@ function LoginForm() {
             <StudentLogin />
           )}
         </div>
-        <div>
+
+        {findForm == "Student" ? 
+          <div>
           <h2>
             Don't have an account ?
             <Link
@@ -76,7 +78,7 @@ function LoginForm() {
               Register
             </Link>
           </h2>
-        </div>
+        </div> :""}
       </div>
     </div>
   );

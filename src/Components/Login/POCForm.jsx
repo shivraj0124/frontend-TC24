@@ -31,7 +31,7 @@ function POCForm() {
         localStorage.setItem("userDetails", JSON.stringify(result.data.data.pocDetails));
         setToken(result.data.data.token);
         setUserDetails(result.data.data.pocDetails)
-        navigate("/Poc/DepartmentDetails");
+        navigate("/POC/Dashboard");
       } else {
         toast(result.data.data.msg, {
           iconTheme: {

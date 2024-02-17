@@ -16,7 +16,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import themeHook from "../Context";
 function HodDetails() {
-  const { token,userDetails } = themeHook();
+  const { token, userDetails } = themeHook();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -30,7 +30,7 @@ function HodDetails() {
   const [email, setEmail] = useState("");
   const [mobileNo, setMobileNO] = useState("");
   const [department, setdepartment] = useState();
-  const [dptList, setdptList] = useState();
+  const [dptList, setdptList] = useState([]);
   const [search, setSearch] = useState("");
   const [departmentId, setdeleteHodsetdepartmentId] = useState();
   const [isModelOpen3, setIsModelOpen3] = useState(false);
@@ -60,7 +60,7 @@ function HodDetails() {
         {
           page: page,
           rows: rowsPerPage,
-          college:userDetails.College
+          college: userDetails.College,
         }
       );
       console.log(result.data.data);
@@ -75,12 +75,8 @@ function HodDetails() {
     e.preventDefault();
     console.log(
       "POC Details",
-      pocUserName,
-      password,
-      email,
-      mobileNo,
-      department,
-      token
+
+      department
     );
     try {
       const result = await axios.post(
@@ -89,8 +85,8 @@ function HodDetails() {
           email: email,
           mobileNo: mobileNo,
           userType: "poc",
-          allocated_college:userDetails.College,
-          allocated_department:department
+          allocated_college: userDetails.College,
+          allocated_department: department,
         },
         {
           headers: {
@@ -112,14 +108,15 @@ function HodDetails() {
     console.log(search);
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/admin/searchPoc`,
+      const response = await axios.post(
+        `http://localhost:8000/api/poc/searchHod`,
         {
-          params: { search },
+          search: search,
+          allocated_college: userDetails.College,
         }
       );
       console.log(response.data);
-      sethodList(response.data.poc);
+      sethodList(response.data.hod);
       setInterval(() => {
         setLoading(false);
       }, 2000);
@@ -162,7 +159,7 @@ function HodDetails() {
     setIsModelOpen2(false);
   };
 
-  const handleEditHodModal = async (id,email, mobileNo) => {
+  const handleEditHodModal = async (id, email, mobileNo) => {
     getAllDptAddHod();
 
     seteditHod({
@@ -171,7 +168,6 @@ function HodDetails() {
       mobileNo: mobileNo,
     });
 
-  
     setEmail(email);
     setMobileNO(mobileNo);
     setIsModelOpen3(true);
@@ -210,8 +206,9 @@ function HodDetails() {
   const getAllDptAddHod = async () => {
     try {
       const result = await axios.post(
-        "http://localhost:8000/api/dpt/getAllDptAddHod",{
-          college:userDetails.College
+        "http://localhost:8000/api/dpt/getAllDptAddHod",
+        {
+          college: userDetails.College,
         }
       );
       console.log(result.data.data);
@@ -222,6 +219,7 @@ function HodDetails() {
   };
   useEffect(() => {
     getAllHod();
+    getAllDptAddHod();
   }, [page, pagesize, pageNumber, isModelOpen, isModelOpen2, isModelOpen3]);
   return (
     <div className="flex flex-col w-full  h-[90vh] p-5">
@@ -246,6 +244,7 @@ function HodDetails() {
               setIsModelOpen(true);
               getAllDptAddHod();
             }}
+            disabled={dptList?.length > 0 ? false : true}
           >
             Add HOD
           </Button>
@@ -253,12 +252,14 @@ function HodDetails() {
       </div>
       <div className=" mt-5 rounded">
         <Paper sx={{ width: "100%" }}>
-          <TableContainer sx={{
+          <TableContainer
+            sx={{
               maxWidth: "100%",
               maxHeight: "500px",
               overflowX: "auto",
               overflowY: "auto",
-            }}>
+            }}
+          >
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
@@ -266,7 +267,7 @@ function HodDetails() {
                   <TableCell>Username</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Mobile No</TableCell>
-                  <TableCell>department Name</TableCell>
+                  <TableCell>Department Name</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -309,7 +310,7 @@ function HodDetails() {
                                 handleEditHodModal(
                                   item._id,
                                   item.email,
-                                  item.mobileNo,
+                                  item.mobileNo
                                 )
                               }
                             >
@@ -463,7 +464,7 @@ function HodDetails() {
                           <span className="text-blue-400">
                             {deleteHod.name}
                           </span>{" "}
-                         Hod's record ?
+                          Hod's record ?
                         </h3>
                         <div className="flex gap-2 mt-10">
                           <Button
@@ -540,7 +541,6 @@ function HodDetails() {
                         />
                       </div>
 
-                
                       <div className="flex flex-col py-4 justify-between gap-3">
                         <div className="flex gap-2 mt-10">
                           <Button

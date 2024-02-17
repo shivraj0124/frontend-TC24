@@ -16,9 +16,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import themeHook from "../Context";
 function DepartmentDetails() {
-  const { token,userDetails ,setUserDetails} = themeHook();
-//   const storedUserDetails = localStorage.getItem("userDetails");
-//   storedUserDetails(storedUserDetails)
+  const { token, userDetails, setUserDetails } = themeHook();
+
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -39,8 +38,7 @@ function DepartmentDetails() {
   const [isModelOpen3, setIsModelOpen3] = useState(false);
   const [EditDept, setEditDept] = useState();
   const [DeleteDept, setDeleteDept] = useState();
-  // const storedUserDetails = localStorage.getItem("userDetails");
-  // setUserDetails(storedUserDetails ? JSON.parse(storedUserDetails) : null);
+
   const handleRowsPerPageChange = (event) => {
     console.log("mypagesize", event.target.value);
     setLoading(true);
@@ -57,7 +55,6 @@ function DepartmentDetails() {
     console.log("this is newpage", pgnum);
   };
   const getAllDpt = async () => {
-    console.log('userDetails',userDetails);
     setLoading(true);
     try {
       const result = await axios.post(
@@ -65,6 +62,7 @@ function DepartmentDetails() {
         {
           page: page,
           rows: rowsPerPage,
+          college: userDetails.College,
         }
       );
       console.log(result.data.data);
@@ -107,14 +105,14 @@ function DepartmentDetails() {
     console.log(search);
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/admin/searchPoc`,
-        {
-          params: { search },
+      const response = await axios.post(
+        `http://localhost:8000/api/poc/searchDepartment`,{
+          college:userDetails.College,
+          search:search
         }
       );
       console.log(response.data);
-      setDepartmentList(response.data.poc);
+      setDepartmentList(response.data.department);
       setInterval(() => {
         setLoading(false);
       }, 2000);
@@ -137,7 +135,7 @@ function DepartmentDetails() {
       const result = await axios.post(
         "http://localhost:8000/api/poc/deleteDPT",
         {
-            dpt_id: DeleteDept.id,
+          dpt_id: DeleteDept.id,
           userType: "poc",
         },
         {
@@ -152,12 +150,12 @@ function DepartmentDetails() {
         toast.error(result.data.data.msg);
       }
     } catch (err) {
-      toast.error(err.message); 
+      toast.error(err.message);
     }
     setIsModelOpen2(false);
   };
 
-  const handleEditDeptModal = async (id, name, About,) => {
+  const handleEditDeptModal = async (id, name, About) => {
     getAllColleges();
 
     setEditDept({
@@ -244,12 +242,14 @@ function DepartmentDetails() {
       </div>
       <div className=" mt-5 rounded">
         <Paper sx={{ width: "100%" }}>
-          <TableContainer sx={{
+          <TableContainer
+            sx={{
               maxWidth: "100%",
               maxHeight: "500px",
               overflowX: "auto",
               overflowY: "auto",
-            }}>
+            }}
+          >
             <Table stickyHeader>
               <TableHead>
                 <TableRow>

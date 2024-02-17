@@ -75,7 +75,7 @@ function Dashboard() {
             <PiStudent className="text-darkgreen" size={60} />
           </div>
         </div>
-      </div>
+      </div> 
       <div className="flex flex-row w-full mt-10 border-2">
         {/* <div className="flex flex-col gap-10 w-full">
           <div className="border-2 border-gray-300 bg=[#f5f5f5] flex flex-row justify-between items-center p-4 rounded-md ">

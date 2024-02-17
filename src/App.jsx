@@ -18,6 +18,10 @@ import OneCollege from "./Components/student/OneCollege";
 import DepartmentDetails from "./Components/Poc/DepartmentDetails";
 import HodHome from "./Components/Hod/HodHome";
 import ProjectDetails from "./Components/Hod/ProjectDetails";
+import CollegeInfo from "./Components/Poc/CollegeInfo";
+import PocDashboard from "./Components/Poc/PocDashboard";
+import HodDashboard from "./Components/Hod/HodDashboard";
+import StudentProjects from "./Components/student/StudentProjects";
 function App() {
   return (
     <>
@@ -31,6 +35,7 @@ function App() {
                 <Route index element={<MainContent />} />
                 <Route path="/home" element={<MainContent />} />
                 <Route path="/college" element={<College />} />
+                <Route path="/StudentProjects" element={<StudentProjects />} />
               </Route>
               <Route path="/Admin" element={<AdminHome />}>
                 <Route path="/Admin/Dashboard" element={<Dashboard />}></Route>
@@ -42,22 +47,24 @@ function App() {
               </Route>
               <Route path="/Poc" element={<PocHome />}>
                 {/* <Route path="/Poc/Dashboard" element={<PocDashboard />}></Route> */}
+                <Route path="/Poc/Dashboard" element={<PocDashboard />}></Route>
                 <Route
                   path="/Poc/DepartmentDetails"
                   element={<DepartmentDetails />}
                 ></Route>
+                <Route path="/Poc/HodDetails" element={<HodDetails />}></Route>
                 <Route
-                  path="/Poc/HodDetails"
-                  element={<HodDetails />}
+                  path="/Poc/CollegeInfo"
+                  element={<CollegeInfo />}
                 ></Route>
               </Route>
               <Route path="/Hod" element={<HodHome />}>
                 {/* <Route path="/Poc/Dashboard" element={<PocDashboard />}></Route> */}
+                <Route path="/Hod/Dashboard" element={<HodDashboard />}></Route>
                 <Route
                   path="/Hod/Projects"
                   element={<ProjectDetails />}
                 ></Route>
-               
               </Route>
             </Routes>
           </BrowserRouter>

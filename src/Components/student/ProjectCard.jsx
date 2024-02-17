@@ -7,8 +7,10 @@ import { FaRegBookmark } from "react-icons/fa6";
 import { FaBookmark } from "react-icons/fa6";
 import axios from 'axios';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 function ProjectCard({ data }) {
+    const navigate = useNavigate()
     const [college_name, setcollege_name] = useState("")
     //console.log(data.allocated_college);
     const getcollege = async () => {
@@ -24,7 +26,7 @@ function ProjectCard({ data }) {
     return (
         <div className=' flex  bg-white flex-col  gap-4 rounded-lg w-full px-6 py-6 '>
 
-            <div className=' grid grid-cols-1 min-[580px]:grid-cols-[auto_1fr]  gap-6 justify-center'>
+            <div className=' grid grid-cols-1 min-[580px]:grid-cols-[auto_1fr]  gap-6 justify-center' onClick={() => { navigate(`/project/${data._id}`) }}>
                 <img src={"https://i0.wp.com/technologysalon.org/wp-content/uploads/2019/04/artificial-intelligence.jpg?resize=640%2C429"}
                     className='w-full min-[580px]:w-40  h-40 rounded-xl object-cover' />
                 <div className=' flex gap-2 flex-col justify-start '>

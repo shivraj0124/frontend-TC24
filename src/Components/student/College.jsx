@@ -3,6 +3,8 @@ import CollegeCard from './CollegeCard'
 import CollegeRightCard from './CollegeRightCard'
 import axios from 'axios';
 
+import not_found from './not_found.png'
+
 function College() {
     const [collegeData, setcollegeData] = useState([]);
     const [search, setsearch] = useState("")
@@ -22,7 +24,7 @@ function College() {
 
     useEffect(() => {
         getdata()
-    }, [])
+    }, [search == ""])
 
     return (
         <div className='w-full flex h-[90vh]'>
@@ -33,7 +35,10 @@ function College() {
                 <h1 className=' text-darkgreen font-semibold text-xl mx-2'>Colleges</h1>
                 <div className=' grid grid-cols-1 min-[550px]:grid-cols-2 gap-4 p-2'>
                     {
-                        collegeData.length === 0 ? <div>No Project Found</div> :
+                        collegeData.length === 0 ? <div className=' flex md:w-[100vh]  justify-center items-center font-semibold'>
+                            <img src={not_found} className=' w-40 h-40' />
+                            <section>No Project Found</section>
+                        </div> :
                             collegeData.map((item, index) => (
                                 <CollegeCard key={index} data={item} />
                             ))

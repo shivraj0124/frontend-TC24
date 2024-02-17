@@ -18,13 +18,13 @@ function New_login() {
                 username: username,
                 password: password
             });
-            console.log("hello",response.data.data.token);
+            console.log("hello", response.data.data.token);
             setUserDetails(response.data.data.existuser)
             Cookies.set("token", response.data.data.token)
             localStorage.setItem(
                 "userDetails",
                 JSON.stringify(response.data.data.existuser)
-              );
+            );
             setToken(response.data.data.token)
             console.log(response.data.data.existuser.userType);
             if (response.data.data.existuser.userType === "student") {

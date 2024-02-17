@@ -7,7 +7,7 @@ function CollegeCard({ data }) {
     const Navigate = useNavigate();
     return (
         <div className=' flex flex-col rounded-lg bg-white' onClick={() => navigate(`/collage/${data._id}`)}>
-            <img src={"https://www.festivalsfromindia.com/wp-content/uploads/2022/04/VJTI-Mumbai.-Photo-VJTI-Mumbai-1_11zon.jpg"}
+            <img src={data.photo ? data.photo : "https://www.festivalsfromindia.com/wp-content/uploads/2022/04/VJTI-Mumbai.-Photo-VJTI-Mumbai-1_11zon.jpg"}
                 className='w-full h-40 object-cover'
             />
             <div className=' p-4'>

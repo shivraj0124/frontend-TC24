@@ -2,12 +2,7 @@ import React, { useEffect, useState } from 'react'
 import themeHook from '../Context'
 import axios from 'axios';
 import ProjectCard from './ProjectCard';
-import RightCard from './RightCard';
-import CollegeCard from './CollegeCard';
-import { IoIosSearch } from "react-icons/io";
-
-import DropDown from './DropDown';
-import MobileSidebar from './MobileSidebar';
+import not_found from './not_found.png'
 
 function MainContent() {
     const { sidebarvalue } = themeHook()
@@ -24,16 +19,15 @@ function MainContent() {
         setprojectData(res.data.data.data);
     }
 
-    const filterdata = async () => {
-        const res = await axios.post("http://localhost:8000/api/project/filter", { time: filtertime, type: filterbycollge });
-        //console.log(res);
-        setprojectData(res.data.data);
-    }
+    // const filterdata = async () => {
+    //     const res = await axios.post("http://localhost:8000/api/project/filter", { time: filtertime, type: filterbycollge });
+    //     //console.log(res);
+    //     setprojectData(res.data.data);
+    // }
 
     useEffect(() => {
-        filterdata()
-    }, [filtertime, filterbycollge, search == ""])
-
+        projectdata()
+    }, [search == " "])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -45,7 +39,8 @@ function MainContent() {
     const arr = ['Latest', "oldest"];
     const typearr = ['WEB', 'APP', 'hardware', 'software', 'AI', 'ML']
     return (
-        <div className="w-full h-[90vh]  flex">
+        <div className="w-full h-[90vh]  flex flex-col">
+
             <div className='flex flex-col p-4 gap-4 w-full border overflow-y-auto min-[900px]:h-[90vh]'>
                 {/* <MobileSidebar /> */}
                 <h1 className=' text-darkgreen font-semibold text-lg text-center'>Empowering Polytechnic Communities through Shared Knowledge: Building Bridges, Inspiring Innovation.</h1>
@@ -67,7 +62,10 @@ function MainContent() {
                     </div>
                     <div className=' mt-4 grid grid-cols-1 gap-4'>
                         {
-                            projectData.length === 0 ? <div>No Project Found</div> :
+                            projectData.length === 0 ? <div className=' flex justify-center items-center font-semibold'>
+                                <img src={not_found} className=' w-40 h-40' />
+                                <section>No Project Found</section>
+                            </div> :
                                 projectData.map((item, index) => (
                                     <ProjectCard key={index} data={item} />
                                 ))

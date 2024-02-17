@@ -39,21 +39,19 @@ function ProjectCard2({ data }) {
           src={
             "https://i0.wp.com/technologysalon.org/wp-content/uploads/2019/04/artificial-intelligence.jpg?resize=640%2C429"
           }
-          className="w-full min-[580px]:w-40  h-48 rounded-xl object-cover"
+          className="w-full min-[580px]:w-44  h-44 rounded-xl object-cover"
         />
         <div className=" flex gap-2 flex-col justify-start ">
           <div>
-            <p className=" font-semibold text-2xl">{data.title}</p>
-            <p className=" text-gray-500 text-xl">
-              <span className=" font-semibold text-xl">Published By : </span>
-              {data?.created_By?.fullName}
-            </p>
-            <p className=" text-gray-500 text-xl">
-              <span className=" font-semibold text-xl">College Name : </span>
+            <p className=" font-semibold text-lg">{data.title}</p>
+            <p className=' text-gray-500 text-sm'>
+              <span className=' font-semibold'>Published By : </span>{data?.created_By?.fullName}</p>
+            <p className="  text-gray-500 text-sm ">
+              <span className=" font-semibold ">College Name : </span>
               {data?.allocated_college?.name}
             </p>
-            <p className=" text-gray-500 text-xl">
-              <span className=" font-semibold text-xl">Type : </span>
+            <p className="  text-gray-500 text-sm ">
+              <span className=" font-semibold ">Type : </span>
               {data?.type}
             </p>
           </div>

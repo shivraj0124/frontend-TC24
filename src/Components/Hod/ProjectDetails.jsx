@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FaToggleOn, FaToggleOff } from "react-icons/fa";
 import {
   CircularProgress,
   Paper,
@@ -59,9 +60,13 @@ function ProjectDetails() {
   const [deleteProject, setDeleteProject] = useState({});
   //for edit
   const [editProject, setEditProject] = useState();
-
+  const [isEnabled, setIsEnabled] = useState();
   const [img, setimg] = useState([]);
+  const [sstatus, setstatus] = useState("");
 
+  const toggleStatus = () => {
+    setIsEnabled(!isEnabled);
+  };
   const setbase = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -70,6 +75,8 @@ function ProjectDetails() {
     };
   };
 
+  let t = "false";
+  let f = "true";
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setbase(file);
@@ -237,6 +244,26 @@ function ProjectDetails() {
     }
   };
 
+  const handlestatus = async (id, s) => {
+    try {
+      console.log(id, s, "54545458458");
+      setLoading(true);
+      const { data } = await axios.post(
+        "http://localhost:8000/api/hod/handleStatus",
+        {
+          project_id: id,
+          active: s,
+        }
+      );
+      if (data.data.status) {
+        setLoading(false);
+        getAllProjects();
+      }
+    } catch {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getAllProjects();
   }, [page, rowsPerPage, isModelOpen, isModelOpen2, isModelOpen3]);
@@ -285,7 +312,7 @@ function ProjectDetails() {
                   <TableCell>Contributors</TableCell>
                   <TableCell>Live Demo</TableCell>
                   <TableCell>Like Count</TableCell>
-                  <TableCell>Comments Count</TableCell>
+                  <TableCell>Status</TableCell>
                   <TableCell>Type</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -360,7 +387,23 @@ function ProjectDetails() {
                           </Link>
                         </TableCell>
                         <TableCell>{item.likecount}</TableCell>
-                        <TableCell>{item.commentcount}</TableCell>
+                        <TableCell>
+                          <div onClick={toggleStatus}>
+                            {item?.isActive === "true" ? (
+                              <FaToggleOn
+                                onClick={() => handlestatus(item._id, t)}
+                                size={23}
+                                color="green"
+                              />
+                            ) : (
+                              <FaToggleOff
+                                onClick={() => handlestatus(item._id, f)}
+                                size={23}
+                                color="red"
+                              />
+                            )}
+                          </div>
+                        </TableCell>
                         <TableCell>{item.type}</TableCell>
                         <TableCell>
                           <div className="flex flex-row gap-2">

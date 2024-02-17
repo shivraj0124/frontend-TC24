@@ -48,7 +48,7 @@ function StudentProjects() {
           type: selectedType,
           allocated_college: userDetails.allocated_college,
           created_By: userDetails._id,
-          allocated_department: userDetails.allocated_department
+          allocated_department: userDetails.allocated_department,
         }
       );
       if (result?.data?.data?.status) {
@@ -61,11 +61,10 @@ function StudentProjects() {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
-  const getAllProjects =async ()=>{
-      try{
-        
-      }
-  }
+
+
+
+  const getAllProjects = async () => {};
   return (
     <div className="w-full flex h-[90vh]">
       <div className=" flex flex-col p-2 w-full h-[90vh] overflow-y-auto">

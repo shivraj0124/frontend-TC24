@@ -16,6 +16,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import themeHook from "../Context";
 import { Link } from "react-router-dom";
+import { FaToggleOn, FaToggleOff } from "react-icons/fa";
 const styles = {
   paper: {
     width: "100%", // Set Paper component width to 100% of its container
@@ -61,6 +62,9 @@ function ProjectDetails() {
   const [editProject, setEditProject] = useState();
 
   const [img, setimg] = useState([]);
+
+  let t = "false";
+  let f = "true";
 
   const setbase = (file) => {
     const reader = new FileReader();
@@ -237,6 +241,20 @@ function ProjectDetails() {
     }
   };
 
+  const handlestatus = async (id, name) => {
+    const { data } = await axios.post(
+      "http://localhost:8000/api/hod/handleStatus",
+      {
+        project_id: id,
+        active: name,
+      }
+    );
+    console.log(data.data.status);
+    if (data.data.status) {
+      getAllProjects();
+    }
+  };
+
   useEffect(() => {
     getAllProjects();
   }, [page, rowsPerPage, isModelOpen, isModelOpen2, isModelOpen3]);
@@ -285,7 +303,7 @@ function ProjectDetails() {
                   <TableCell>Contributors</TableCell>
                   <TableCell>Live Demo</TableCell>
                   <TableCell>Like Count</TableCell>
-                  <TableCell>Comments Count</TableCell>
+                  <TableCell>Status</TableCell>
                   <TableCell>Type</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -360,7 +378,22 @@ function ProjectDetails() {
                           </Link>
                         </TableCell>
                         <TableCell>{item.likecount}</TableCell>
-                        <TableCell>{item.commentcount}</TableCell>
+                        <TableCell>
+                          {item.isActive === "true" ? (
+                            <FaToggleOn
+                              onClick={() => handlestatus(item._id, false)}
+                              size={23}
+                              color="green"
+                            />
+                          ) : (
+                            <FaToggleOff
+                              onClick={() => handlestatus(item._id, true)}
+                              size={23}
+                              color="red"
+                            />
+                          )}
+                        </TableCell>
+
                         <TableCell>{item.type}</TableCell>
                         <TableCell>
                           <div className="flex flex-row gap-2">

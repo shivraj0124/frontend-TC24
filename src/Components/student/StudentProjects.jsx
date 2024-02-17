@@ -1,6 +1,9 @@
 import Button from "@mui/material/Button";
 import React, { useEffect, useState } from "react";
 import { Close, TokenOutlined } from "@mui/icons-material";
+import axios from "axios";
+import themeHook from "../Context";
+import { toast } from "react-hot-toast";
 function StudentProjects() {
   const projectTypes = [
     { id: 1, value: "Software" },
@@ -8,12 +11,14 @@ function StudentProjects() {
     { id: 3, value: "AI/Ml" },
     { id: 4, value: "IOT" },
   ];
+  const { userDetails } = themeHook();
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [multimedia, setMultimedia] = useState([]);
   const [contributors, setContributors] = useState("");
   const [liveDemo, setLiveDemo] = useState("");
+  const [codeLink, setCodeLink] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const setbase = (file) => {
     const reader = new FileReader();
@@ -30,16 +35,37 @@ function StudentProjects() {
   };
   const handleAddProject = async (e) => {
     e.preventDefault();
-    console.log(
-      "data",
-      title,
-      description,
-      multimedia,
-      contributors,
-      liveDemo,
-      selectedType
+    try{
+    const result = axios.post(
+      "http://localhost:8000/api/project/addProjectByStudent",
+      {
+        title: title,
+        description: description,
+        multimedia: multimedia,
+        contributors: contributors,
+        liveDemo: liveDemo,
+        codeLink: codeLink,
+        type: selectedType,
+        allocated_college: userDetails.allocated_college,
+        created_By:userDetails._id,
+        allocated_department:userDetails.allocated_department
+      }
     );
+    if (result?.data?.data?.status) {
+      toast.success(result?.data?.data?.msg);
+    } else {
+      toast.error(result?.data?.data?.msg);
+    }
+    setIsModelOpen(false);
+  }catch (err) {
+    toast.error(err.message); // Use err.message to get the error message
+  }
   };
+  const getAllProjects =async ()=>{
+      try{
+        
+      }
+  }
   return (
     <div className="w-full flex h-[90vh]">
       <div className=" flex flex-col p-2 w-full h-[90vh] overflow-y-auto">
@@ -161,6 +187,16 @@ function StudentProjects() {
                         className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
                         placeholder="Drop Live Project Link"
                         onChange={(e) => setLiveDemo(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <label className="mt-5">Project Code Link</label>
+                      <input
+                        type="telephone"
+                        className="border-2 border-gray-300 rounded-md px-2 py-1  focus:outline-none placeholder:text-sm placeholder:text-gray-400"
+                        placeholder="Drop Code Link"
+                        onChange={(e) => setCodeLink(e.target.value)}
                         required
                       />
                     </div>

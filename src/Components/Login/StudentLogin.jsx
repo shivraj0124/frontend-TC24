@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 function StudentLogin() {
-  const { findForm, setToken } = themeHook();
+  const { findForm, setToken, setUserDetails } = themeHook();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [cookies, setCookie] = useCookies(["token"]);
@@ -23,9 +23,18 @@ function StudentLogin() {
         toast.success(result.data.data.msg);
         console.log("token", result.data.data.token);
         setCookie("token", result.data.data.token, { path: "/" });
+        localStorage.setItem(
+          "userDetails",
+          JSON.stringify(result.data.data.existuser)
+        );
+        setToken(result.data.data.token);
+        setUserDetails(result.data.data.existuser);
+        console.log(result.data);
         if (findForm === "Student") {
+          localStorage.setItem("userType", "Student");
           navigate("/");
         } else {
+          localStorage.setItem("userType", "Admin");
           navigate("/Admin/Dashboard");
         }
       } else {

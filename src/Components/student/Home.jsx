@@ -8,13 +8,13 @@ import Smsidebar from './Smsidebar'
 function Home() {
     const { sidebarvalue, userDetails } = themeHook
     const navigate = useNavigate();
-    useEffect(() => {
-        const userDetailsFromLocalStorage = JSON.parse(localStorage.getItem('userDetails'));
-        console.log(userDetailsFromLocalStorage);
-        if (!userDetailsFromLocalStorage) {
-            navigate("/login")
-        }
-    }, [userDetails])
+    // useEffect(() => {
+    //     const userDetailsFromLocalStorage = JSON.parse(localStorage.getItem('userDetails'));
+    //     console.log(userDetailsFromLocalStorage);
+    //     if (!userDetailsFromLocalStorage) {
+    //         navigate("/login")
+    //     }
+    // }, [userDetails])
 
     return (
         <div className='bg-[#f5f5f5] w-full max-h-screen'>

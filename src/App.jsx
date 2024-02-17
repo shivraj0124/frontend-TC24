@@ -25,6 +25,7 @@ import StudentProjects from "./Components/student/StudentProjects";
 import Image from "./Components/test/Image";
 import Profile from "./Components/student/Profile";
 import OneProject from "./Components/student/OneProject";
+import New_login from "./Components/Login/New_login";
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
         <MantineProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/Login" element={<LoginForm />}></Route>
+              <Route path="/Login" element={<New_login />}></Route>
               <Route path="/SignUp" element={<SignUp />}></Route>
               {/* <Route path="/image" element={<Image />}></Route> */}
               <Route path="/" element={<Home />}>

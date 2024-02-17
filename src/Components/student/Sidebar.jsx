@@ -11,7 +11,7 @@ import { GoProjectSymlink } from "react-icons/go";
 
 function Sidebar({ data }) {
   const { sidebarvalue, setsidebarvalue, userDetails } = themeHook();
-  console.log(userDetails, "dddd");
+
   const handleItemClick = (e) => {
     const value = e.target.textContent.trim();
     setsidebarvalue(value);
@@ -61,7 +61,7 @@ function Sidebar({ data }) {
             {" "}
             <GoProjectSymlink size={22} className="" />
           </div>
-          <div>Add</div>
+          <div>Students Projects</div>
         </Link>
 
         <Link

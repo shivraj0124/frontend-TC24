@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function ProjectCard({ data }) {
     const navigate = useNavigate()
     const [college_name, setcollege_name] = useState("")
-    console.log(data.allocated_college);
+    //console.log(data.allocated_college);
     const getcollege = async () => {
         const col = await axios.post("http://localhost:8000/api/college/onecollge", { college: data.allocated_college });
         // console.log(col.data.data);

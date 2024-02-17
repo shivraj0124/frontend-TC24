@@ -4,6 +4,7 @@ import { Close, TokenOutlined } from "@mui/icons-material";
 import axios from "axios";
 import themeHook from "../Context";
 import { toast } from "react-hot-toast";
+import ProjectCard2 from "./ProjectCard2";
 function StudentProjects() {
   const projectTypes = [
     { id: 1, value: "Software" },
@@ -20,6 +21,9 @@ function StudentProjects() {
   const [liveDemo, setLiveDemo] = useState("");
   const [codeLink, setCodeLink] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [projectList, setProjectList] = useState([]);
+  const [loading, setLoading] = useState("");
+
   const setbase = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -61,10 +65,11 @@ function StudentProjects() {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
+  // const getAllProjects =async ()=>{
+  //     try{
 
-
-
-  const getAllProjects = async () => {};
+  //     }
+  // }
   return (
     <div className="w-full flex h-[90vh]">
       <div className=" flex flex-col p-2 w-full h-[90vh] overflow-y-auto">
@@ -94,7 +99,15 @@ function StudentProjects() {
         <h1 className=" text-darkgreen font-semibold text-xl mx-2">
           Projects Uploaded By Students
         </h1>
-        <div className=" grid grid-cols-1 min-[550px]:grid-cols-2 gap-4 p-2"></div>
+        <div className=" grid grid-cols-1 gap-4 p-2">
+          {projectList.length === 0 ? (
+            <div>No Project Found</div>
+          ) : (
+            projectList?.map((item, index) => (
+              <ProjectCard2 key={index} data={item} />
+            ))
+          )}
+        </div>
       </div>
       {isModelOpen && (
         <>

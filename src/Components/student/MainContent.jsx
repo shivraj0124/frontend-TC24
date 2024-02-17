@@ -26,7 +26,7 @@ function MainContent() {
 
     const filterdata = async () => {
         const res = await axios.post("http://localhost:8000/api/project/filter", { time: filtertime, type: filterbycollge });
-        console.log(res);
+        //console.log(res);
         setprojectData(res.data.data);
     }
 

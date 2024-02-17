@@ -33,6 +33,7 @@ export const ContextProvider = ({ children }) => {
       setToken(tokenFromCookie);
       console.log(tokenFromCookie);
     }
+    
   }, []);
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

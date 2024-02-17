@@ -2,21 +2,33 @@ import React, { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { RxDashboard } from "react-icons/rx";
 import themeHook from "../Context";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import { FiUserCheck } from "react-icons/fi";
 import { LuSchool2 } from "react-icons/lu";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { BsBuildings } from "react-icons/bs";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 function Sidebar({ data }) {
-  const { sidebarvalue, setsidebarvalue ,userDetails} = themeHook();
+  const { sidebarvalue, setsidebarvalue ,userDetails,setUserDetails,token,setToken} = themeHook();
   const [sidebarValue2, setSidebarValue2] = useState("Dashboard");
+  const navigate=useNavigate()
   const handleItemClick = (e) => {
     const value = e.target.textContent.trim();
     // setsidebarvalue(value);
     setSidebarValue2(value);
     console.log("state", sidebarvalue);
   };
-
+  const handleLogOut = async () => {
+    setUserDetails(null);
+    localStorage.removeItem("userDetails");
+    if (token) {
+      Cookies.remove("token");
+      setToken("")
+    }
+    toast.success("Logout Successfully");
+    navigate("/") 
+};
   return (
     <div className=" flex flex-col border w-full p-4 h-full justify-between">
       <ul className="flex flex-col w-full gap-2">
@@ -84,7 +96,7 @@ function Sidebar({ data }) {
             <p className=" font-semibold text-lg">{userDetails?.username}</p>
           </section>
         </section>
-        <button className=" bg-buttongreen bg-opacity-30 w-full text-green-600 px-4 py-[5px] font-semibold rounded-full mt-5">
+        <button  onClick={handleLogOut} className=" bg-buttongreen bg-opacity-30 w-full text-green-600 px-4 py-[5px] font-semibold rounded-full mt-5">
           logout
         </button>
       </div>

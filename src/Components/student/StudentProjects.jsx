@@ -23,7 +23,7 @@ function StudentProjects() {
   const [selectedType, setSelectedType] = useState("");
   const [projectList, setProjectList] = useState([]);
   const [loading, setLoading] = useState("");
-
+  const [search,setSearch]=useState("")
   const setbase = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -78,6 +78,12 @@ function StudentProjects() {
     }
     setLoading(false);
   };
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    const res = await axios.post("http://localhost:8000/api/project/searchStudentsProj", { title: search });
+    console.log(res.data.data.projects);
+    setProjectList(res.data.data.projects);
+}
   useEffect(() => {
     getAllProjects();
   }, [userDetails]);
@@ -85,11 +91,12 @@ function StudentProjects() {
     <div className="w-full flex h-[90vh]">
       <div className=" flex flex-col p-2 w-full h-[90vh] overflow-y-auto">
         <div className="flex flex-row w-[100%] items-center">
-          <form className=" p-4 flex justify-center w-[100%]">
+          <form onSubmit={handleSearch} className=" p-4 flex justify-center w-[100%]">
             <input
               type="search"
               className=" w-[80%] rounded-xl py-[6px] border px-4 focus:outline-none text-gray-500 "
               placeholder="serach project"
+              onChange={(e)=>setSearch(e.target.value)}
             />
           </form>
           <div>

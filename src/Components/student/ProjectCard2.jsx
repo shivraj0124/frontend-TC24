@@ -44,21 +44,23 @@ function ProjectCard2({ data }) {
         <div className=" flex gap-2 flex-col justify-start ">
           <div>
             <p className=" font-semibold text-2xl">{data.title}</p>
-            <p className=" text-gray-500 text-xl">
-              <span className=" font-semibold text-xl">Published By : </span>
+            <p className=" text-gray-500 text-lg">
+              <span className=" font-semibold text-lg">Published By : </span>
               {data?.created_By?.fullName}
             </p>
-            <p className=" text-gray-500 text-xl">
-              <span className=" font-semibold text-xl">College Name : </span>
+            <p className=" text-gray-500 text-lg">
+              <span className=" font-semibold text-lg">College Name : </span>
               {data?.allocated_college?.name}
             </p>
-            <p className=" text-gray-500 text-xl">
-              <span className=" font-semibold text-xl">Type : </span>
+            <p className=" text-gray-500 text-lg">
+              <span className=" font-semibold text-lg">Type : </span>
               {data?.type}
             </p>
+            <p className=" text-gray-500 text-lg">
+              <span className=" font-semibold text-lg">Description : </span>
+              {data?.description}
+            </p>
           </div>
-
-          <div className=" line-clamp-3 text-sm">{data.description}</div>
 
           <div className=" flex flex-col min-[500px]:flex-row justify-between text-xs text-gray-500 mt-2 items-start max-[500px]:gap-1 min-[500px]:items-end">
             <div className=" ">

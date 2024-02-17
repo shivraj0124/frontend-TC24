@@ -44,11 +44,11 @@ function New_login() {
     };
 
     return (
-        <div className=' flex h-screen'>
-            <div className='w-[50%] flex justify-center items-center'>
+        <div className=' flex flex-col md:flex-row h-screen'>
+            <div className='md:w-[50%] w-[100%] flex justify-center items-center'>
                 <img src={photo} alt="Login" />
             </div>
-            <div className='w-[35%] flex flex-col justify-center items-start p-2'>
+            <div className='md:w-[35%] w-[100%] flex flex-col justify-center items-start p-2'>
                 <h1 className=' text-xl '>Welcome <br /><span className=' text-textgreen text-3xl font-bold'>TO PROJECT REPO</span></h1>
                 <form onSubmit={hadlesubmit} className=' w-full flex flex-col gap-3'>
                     <label className=' font-semibold '>USERNAME</label>

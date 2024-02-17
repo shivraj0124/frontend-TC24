@@ -1,32 +1,60 @@
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 function OneProject() {
+    const [projectdata, setProjectdata] = useState([])
+    const [collegename, setcollegename] = useState("")
+    const [Dptname, setDptgename] = useState("")
     const { id } = useParams();
     console.log(id);
 
-    const getprojectdata = async () => {
+    const getProjectdata = async () => {
         const res = await axios.post("http://localhost:8000/api/project/getoneproject", { project_id: id });
-        console.log(res);
+        console.log(res.data.data);
+        setProjectdata(res.data.data);
+        //console.log(projectdata);
+    };
+
+    const getcollege = async () => {
+        const res = await axios.post("http://localhost:8000/api/college/onecollge", { college: projectdata.allocated_college });
+        //console.log(res.data.data);
+        setcollegename(res.data.data.name)
     }
+
+    const getdpt = async () => {
+        const res = await axios.post("http://localhost:8000/api/dpt/onedpt", { dpt: projectdata.allocated_department });
+        console.log(res.data.data.data);
+        setDptgename(res.data.data.data)
+    }
+
+
     useEffect(() => {
-        getprojectdata();
+        getProjectdata();
+        getcollege();
+        getdpt();
     }, [])
 
 
     return (
         <div className=' h-[90vh]'>
-            <div className='p-4 bg-white  m-3 rounded-md'>
-                <h1>Text messaging, or texting, is the act of composing and sending electronic messages</h1>
-                <section className=' flex'>
-                    <h1>Software</h1>
-                    <h1>time</h1>
+            <div className='p-4 bg-white flex flex-col gap-2  m-3 rounded-md h-[95%] overflow-y-auto'>
+                <h1 className=' font-semibold text-xl'>{projectdata.title}</h1>
+                <section className=' flex gap-5'>
+                    <h1 className=' text-sm text-gray-500'><span className=' font-semibold'>Type:</span>{projectdata.type}</h1>
+                    <h1 className=' text-sm text-gray-500'><span className=' font-semibold'>posted at:</span> 24 jan 2023</h1>
                 </section>
-                <img src='' />
-                <h1>Description</h1>
-                <h1>Text messages are used for personal, family, business, and social purposes. Governmental and non-governmental organizations use text messaging for communication between colleagues. In the 2010s, the sending of short informal messages became an accepted part of many cultures, as happened earlier with emailing.[1] This makes texting a quick and easy way to communicate with friends, family, and colleagues, including in contexts where a call would be impolite or inappropriate (e.g., calling very late at night or when one knows the other person is busy with family or work activities). Like e-mail and voicemail, and unlike calls (in which the caller hopes to speak directly with the recipient), texting does not require the caller and recipient to both be free at the same moment; this permits communication even between busy individuals. Text messages can also be used to interact with automated systems, for example, to order products or services from e-commerce websites or to participate in online contests. Advertisers and service providers use direct text marketing to send messages to mobile users about promotions, payment due dates, and other notifications instead of using postal mail, email, or voicemail.</h1>
-
+                <img src={projectdata.multimedia}
+                    className=' w-[100%] h-40 rounded-lg'
+                />
+                <h1 className=' font-semibold'>Description :</h1>
+                <h1 className=' text-sm text-gray-500'>{projectdata.description}</h1>
+                <h1 className=' font-semibold'>Contibuters :</h1>
+                <h1 className=' text-sm text-gray-500'>{projectdata.contributers}</h1>
+                <h1 className=' font-semibold'>collage name : </h1>
+                <h1 className=' text-sm text-gray-500'>{collegename}</h1>
+                <h1 className=' font-semibold'>Department name : </h1>
+                <h1 className=' text-sm text-gray-500'>{Dptname.name}</h1>
             </div>
         </div>
     )

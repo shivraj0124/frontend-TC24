@@ -106,10 +106,10 @@ function DepartmentDetails() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/poc/searchDepartment`,{
-          college:userDetails.College,
-          search:search
-        }
+        `http://localhost:8000/api/poc/searchDepartment`, {
+        college: userDetails.College,
+        search: search
+      }
       );
       console.log(response.data);
       setDepartmentList(response.data.department);

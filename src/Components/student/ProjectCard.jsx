@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import signUpImage from "./cardImage.jpg";
-import { AiOutlineLike } from "react-icons/ai";
-import { AiFillLike } from "react-icons/ai";
-import { MdComment } from "react-icons/md";
-import { FaRegBookmark } from "react-icons/fa6";
-import { FaBookmark } from "react-icons/fa6";
 import axios from 'axios';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function ProjectCard({ data }) {
     const navigate = useNavigate()
     const [college_name, setcollege_name] = useState("")
-    //console.log(data.allocated_college);
+    console.log(data.allocated_college);
     const getcollege = async () => {
         const col = await axios.post("http://localhost:8000/api/college/onecollge", { college: data.allocated_college });
         // console.log(col.data.data);
@@ -43,7 +38,6 @@ function ProjectCard({ data }) {
                         <div className=' '><span className=' font-semibold'>Published on :</span> {moment(data.time).format('YYYY-MM-DD')}</div>
                         <div className=' bg-[#57CC99] rounded-full bg-opacity-25 px-3 py-2 text-green-600  font-semibold'>Go to Project </div>
                     </div>
-
                 </div>
 
             </div>

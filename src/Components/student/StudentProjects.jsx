@@ -4,6 +4,7 @@ import { Close, TokenOutlined } from "@mui/icons-material";
 import axios from "axios";
 import themeHook from "../Context";
 import { toast } from "react-hot-toast";
+import ProjectCard2 from "./ProjectCard2";
 function StudentProjects() {
   const projectTypes = [
     { id: 1, value: "Software" },
@@ -20,6 +21,9 @@ function StudentProjects() {
   const [liveDemo, setLiveDemo] = useState("");
   const [codeLink, setCodeLink] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [projectList, setProjectList] = useState([]);
+  const [loading, setLoading] = useState("");
+
   const setbase = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -35,37 +39,51 @@ function StudentProjects() {
   };
   const handleAddProject = async (e) => {
     e.preventDefault();
-    try{
-    const result = axios.post(
-      "http://localhost:8000/api/project/addProjectByStudent",
-      {
-        title: title,
-        description: description,
-        multimedia: multimedia,
-        contributors: contributors,
-        liveDemo: liveDemo,
-        codeLink: codeLink,
-        type: selectedType,
-        allocated_college: userDetails.allocated_college,
-        created_By:userDetails._id,
-        allocated_department:userDetails.allocated_department
+    try {
+      const result = axios.post(
+        "http://localhost:8000/api/project/addProjectByStudent",
+        {
+          title: title,
+          description: description,
+          multimedia: multimedia,
+          contributors: contributors,
+          liveDemo: liveDemo,
+          codeLink: codeLink,
+          type: selectedType,
+          allocated_college: userDetails.allocated_college,
+          created_By: userDetails._id,
+          allocated_department: userDetails.allocated_department,
+        }
+      );
+      if (result?.data?.data?.status) {
+        toast.success(result?.data?.data?.msg);
+      } else {
+        toast.error(result?.data?.data?.msg);
       }
-    );
-    if (result?.data?.data?.status) {
-      toast.success(result?.data?.data?.msg);
-    } else {
-      toast.error(result?.data?.data?.msg);
+      setIsModelOpen(false);
+    } catch (err) {
+      toast.error(err.message); // Use err.message to get the error message
     }
-    setIsModelOpen(false);
-  }catch (err) {
-    toast.error(err.message); // Use err.message to get the error message
-  }
   };
-  const getAllProjects =async ()=>{
-      try{
-        
-      }
-  }
+  const getAllProjects = async () => {
+    console.log(userDetails.allocated_college, "js");
+    try {
+      const result = await axios.post(
+        "http://localhost:8000/api/auth/getAllProjects",
+        {
+          allocated_college: userDetails.allocated_college,
+        }
+      );
+      setProjectList(result.data.data.data);
+      console.log(result.data.data.data);
+    } catch (err) {
+      toast.error(err.message); // Use err.message to get the error message
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    getAllProjects();
+  }, [userDetails]);
   return (
     <div className="w-full flex h-[90vh]">
       <div className=" flex flex-col p-2 w-full h-[90vh] overflow-y-auto">
@@ -95,7 +113,15 @@ function StudentProjects() {
         <h1 className=" text-darkgreen font-semibold text-xl mx-2">
           Projects Uploaded By Students
         </h1>
-        <div className=" grid grid-cols-1 min-[550px]:grid-cols-2 gap-4 p-2"></div>
+        <div className=" grid grid-cols-1 gap-4 p-2">
+          {projectList.length === 0 ? (
+            <div>No Project Found</div>
+          ) : (
+            projectList?.map((item, index) => (
+              <ProjectCard2 key={index} data={item} />
+            ))
+          )}
+        </div>
       </div>
       {isModelOpen && (
         <>

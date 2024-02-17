@@ -11,10 +11,14 @@ function OneCollege() {
 
     const getdata = async () => {
         const res = await axios.post("http://localhost:8000/api/college/onecollge", { college: id });
-        //console.log(res.data.data);
+        console.log(res.data.data);
         setcollegedata(res.data.data)
     }
 
+
+    const getprojectdata = async () => {
+        const data = await axios.post("")
+    }
     useEffect(() => {
         getdata();
     }, [])

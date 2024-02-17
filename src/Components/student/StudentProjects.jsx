@@ -52,7 +52,7 @@ function StudentProjects() {
           type: selectedType,
           allocated_college: userDetails.allocated_college,
           created_By: userDetails._id,
-          allocated_department: userDetails.allocated_department,
+          allocated_department: userDetails.allocated_department
         }
       );
       if (result?.data?.data?.status) {

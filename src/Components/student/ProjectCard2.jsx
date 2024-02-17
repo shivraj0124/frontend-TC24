@@ -54,9 +54,11 @@ function ProjectCard2({ data }) {
               <span className=" font-semibold ">Type : </span>
               {data?.type}
             </p>
+            <p className=" text-gray-500 text-lg">
+              <span className=" font-semibold text-lg">Description : </span>
+              {data?.description}
+            </p>
           </div>
-
-          <div className=" line-clamp-3 text-sm">{data.description}</div>
 
           <div className=" flex flex-col min-[500px]:flex-row justify-between text-xs text-gray-500 mt-2 items-start max-[500px]:gap-1 min-[500px]:items-end">
             <div className=" ">

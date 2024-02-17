@@ -16,6 +16,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import themeHook from "../Context";
 import { Link } from "react-router-dom";
+import { FaToggleOn, FaToggleOff } from "react-icons/fa";
 const styles = {
   paper: {
     width: "100%", // Set Paper component width to 100% of its container
@@ -61,6 +62,9 @@ function ProjectDetails() {
   const [editProject, setEditProject] = useState();
 
   const [img, setimg] = useState([]);
+
+  let t = "false";
+  let f = "true";
 
   const setbase = (file) => {
     const reader = new FileReader();
@@ -237,6 +241,20 @@ function ProjectDetails() {
     }
   };
 
+  const handlestatus = async (id, name) => {
+    const { data } = await axios.post(
+      "http://localhost:8000/api/hod/handleStatus",
+      {
+        project_id: id,
+        active: name,
+      }
+    );
+    console.log(data.data.status);
+    if (data.data.status) {
+      getAllProjects();
+    }
+  };
+
   useEffect(() => {
     getAllProjects();
   }, [page, rowsPerPage, isModelOpen, isModelOpen2, isModelOpen3]);
@@ -284,8 +302,6 @@ function ProjectDetails() {
                   <TableCell>Multimedia</TableCell>
                   <TableCell>Contributors</TableCell>
                   <TableCell>Live Demo</TableCell>
-                  <TableCell>Like Count</TableCell>
-                  <TableCell>Comments Count</TableCell>
                   <TableCell>Type</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -359,8 +375,22 @@ function ProjectDetails() {
                             {item.live_demo}
                           </Link>
                         </TableCell>
-                        <TableCell>{item.likecount}</TableCell>
-                        <TableCell>{item.commentcount}</TableCell>
+                        <TableCell>
+                          {item.isActive === "true" ? (
+                            <FaToggleOn
+                              onClick={() => handlestatus(item._id, false)}
+                              size={23}
+                              color="green"
+                            />
+                          ) : (
+                            <FaToggleOff
+                              onClick={() => handlestatus(item._id, true)}
+                              size={23}
+                              color="red"
+                            />
+                          )}
+                        </TableCell>
+
                         <TableCell>{item.type}</TableCell>
                         <TableCell>
                           <div className="flex flex-row gap-2">
@@ -401,12 +431,12 @@ function ProjectDetails() {
 
         {isModelOpen1 && (
           <>
-            <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none  bg-opacity-10 backdrop-filter backdrop-blur-lg">
+            <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto  fixed inset-0 z-50 outline-none focus:outline-none  bg-opacity-10 backdrop-filter backdrop-blur-lg">
               <div className="relative  my-6 mx-auto w-[50%]">
                 {/*content*/}
-                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none h-[500px] m-10 overflow-y-auto">
                   {/*header*/}
-                  <div className="flex items-center justify-between p-3 border-b border-solid border-slate-200 rounded-t">
+                  <div className="flex items-center justify-between p-3 border-b border-solid border-slate-200 rounded-t sticky top-0 bg-white">
                     <h3 className="text-xl font-semibold text-[#757575]">
                       Project Details
                     </h3>
@@ -429,38 +459,30 @@ function ProjectDetails() {
                       <div>{currentRow.title}</div>
                     </div>
                     <div className="flex flex-col mt-2">
+                      <h1 className="font-bold">Type</h1>
+                      <div>{currentRow.type}</div>
+                    </div>
+                    <div className="flex flex-col mt-2">
                       <h1 className="font-bold">Description</h1>
                       <div>{currentRow.description}</div>
                     </div>
-                    <div className="flex flex-col mt-2">
-                      <h1 className="font-bold">Multimedia</h1>
-                      <div>{currentRow.multimedia}</div>
-                    </div>
+
                     <div className="flex flex-col mt-2">
                       <h1 className="font-bold">Contributors</h1>
-                      <div>
-                        {" "}
-                        {currentRow.contributers?.c1},
-                        {currentRow.contributers?.c2},
-                        {currentRow.contributers?.c3},
-                        {currentRow.contributers?.c4}
-                      </div>
+                      <div> {currentRow.contributers}</div>
                     </div>
                     <div className="flex flex-col mt-2">
                       <h1 className="font-bold">Live Demo</h1>
-                      <div>{currentRow.live_demo}</div>
-                    </div>
-                    <div className="flex flex-col mt-2">
-                      <h1 className="font-bold">Likes</h1>
-                      <div>{currentRow.likecount}</div>
-                    </div>
-                    <div className="flex flex-col mt-2">
-                      <h1 className="font-bold">Comments</h1>
-                      <div>{currentRow.commentcount}</div>
-                    </div>
-                    <div className="flex flex-col mt-2">
-                      <h1 className="font-bold">Type</h1>
-                      <div>{currentRow.type}</div>
+                      <div>
+                        {" "}
+                        <a
+                          href={currentRow.live_demo}
+                          target="_blank"
+                          className="text-blue-500"
+                        >
+                          {currentRow.live_demo}
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>

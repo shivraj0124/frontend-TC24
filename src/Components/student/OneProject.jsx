@@ -20,7 +20,6 @@ function OneProject() {
   };
 
 
-
   useEffect(() => {
     getProjectdata();
   }, []);

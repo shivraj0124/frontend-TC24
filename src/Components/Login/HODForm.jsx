@@ -32,7 +32,7 @@ function HODForm() {
           "userDetails",
           JSON.stringify(result.data.data.hodDetails)
         );
-        localStorage.setItem("userType","HOD")
+        localStorage.setItem("userType", "HOD")
         setToken(result.data.data.token);
         setUserDetails(result.data.data.hodDetails);
         navigate("/Hod/Dashboard");

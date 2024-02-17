@@ -50,7 +50,7 @@ function StudentLogin() {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
-  useEffect(() => {}, [findForm]);
+  useEffect(() => { }, [findForm]);
   return (
     <div className="text-center flex flex-col items-center justify-center bg-white rounded-md pt-5 pb-5 ">
       <h1 className="text-2xl font-semibold ">{findForm} Login</h1>

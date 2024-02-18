@@ -31,18 +31,15 @@ function MainContent() {
     setprojectData(res.data.data.data);
   };
 
-  const filterdata = async () => {
-    const res = await axios.post("http://localhost:8000/api/project/filter", {
-      time: filtertime,
-      type: filterbycollge,
-    });
-    //console.log(res);
-    setprojectData(res.data.data);
-  };
+    // const filterdata = async () => {
+    //     const res = await axios.post("http://localhost:8000/api/project/filter", { time: filtertime, type: filterbycollge });
+    //     //console.log(res);
+    //     setprojectData(res.data.data);
+    // }
 
-  useEffect(() => {
-    filterdata();
-  }, [filtertime, filterbycollge, search == ""]);
+    useEffect(() => {
+        projectdata()
+    }, [search == " "])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,6 +96,18 @@ function MainContent() {
             </div>
           </Carousel>
         </section>
+    const arr = ['Latest', "oldest"];
+    const typearr = ['WEB', 'APP', 'hardware', 'software', 'AI', 'ML']
+    return (
+        <div className="w-full h-[90vh]  flex flex-col">
+
+            <div className='flex flex-col p-4 gap-4 w-full border overflow-y-auto min-[900px]:h-[90vh]'>
+                {/* <MobileSidebar /> */}
+                <h1 className=' text-darkgreen font-semibold text-lg text-center'>Empowering Polytechnic Communities through Shared Knowledge: Building Bridges, Inspiring Innovation.</h1>
+                <section className='w-full'>
+                    <img className=' bg-black rounded-md w-full h-[200px] object-cover'
+                        src='https://www.itu.int/en/ITU-D/Environment/PublishingImages/Pages/Priority-Areas/Green-GovStack/Green%20gov%20banner.jpg' />
+                </section>
 
         <section>
           <h1 className=" mx-2 font-semibold text-xl text-textgreen mb-2">
@@ -108,6 +117,25 @@ function MainContent() {
             <div className=" flex  gap-1 w-full">
               {/* <DropDown placeholder={"time"} data={arr} type={"time"} />
                             <DropDown placeholder={"type"} data={typearr} type={"college"} /> */}
+                        </div>
+                        <form onSubmit={handleSubmit} className='flex h-9'>
+                            <input type="text" placeholder="search" onChange={(e) => setsrach(e.target.value)} className=' w-auto min-[800px]:w-60 bg-white border h-full rounded-md px-4 focus:outline-none text-sm text-gray-600' />
+                        </form>
+                    </div>
+                    <div className=' mt-4 grid grid-cols-1 gap-4'>
+                        {
+                            projectData.length === 0 ? <div className=' flex justify-center items-center font-semibold'>
+                                <img src={not_found} className=' w-40 h-40' />
+                                <section>No Project Found</section>
+                            </div> :
+                                projectData.map((item, index) => (
+                                    <ProjectCard key={index} data={item} />
+                                ))
+                        }
+                    </div>
+                </section>
+            </div>
+            {/* <div className=' h-[90vh] p-1 overflow-y-auto border '>
             </div>
             <form onSubmit={handleSubmit} className="flex h-9">
               <input

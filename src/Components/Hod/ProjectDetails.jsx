@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FaToggleOn, FaToggleOff } from "react-icons/fa";
 import {
   CircularProgress,
   Paper,
@@ -16,10 +17,10 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import themeHook from "../Context";
 import { Link } from "react-router-dom";
-import { FaToggleOn, FaToggleOff } from "react-icons/fa";
+
 const styles = {
   paper: {
-    width: "100%", // Set Paper component width to 100% of its container
+    width: "100%",
     overflowX: "auto", // Add horizontal scrollbar if content overflows
   },
   pagination: {
@@ -60,12 +61,16 @@ function ProjectDetails() {
   const [deleteProject, setDeleteProject] = useState({});
   //for edit
   const [editProject, setEditProject] = useState();
-
+  const [isEnabled, setIsEnabled] = useState();
   const [img, setimg] = useState([]);
+  const [sstatus, setstatus] = useState("");
 
   let t = "false";
   let f = "true";
 
+  const toggleStatus = () => {
+    setIsEnabled(!isEnabled);
+  };
   const setbase = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -241,17 +246,23 @@ function ProjectDetails() {
     }
   };
 
-  const handlestatus = async (id, name) => {
-    const { data } = await axios.post(
-      "http://localhost:8000/api/hod/handleStatus",
-      {
-        project_id: id,
-        active: name,
+  const handlestatus = async (id, s) => {
+    try {
+      console.log(id, s, "54545458458");
+      setLoading(true);
+      const { data } = await axios.post(
+        "http://localhost:8000/api/hod/handleStatus",
+        {
+          project_id: id,
+          active: s,
+        }
+      );
+      if (data.data.status) {
+        setLoading(false);
+        getAllProjects();
       }
-    );
-    console.log(data.data.status);
-    if (data.data.status) {
-      getAllProjects();
+    } catch {
+      setLoading(false);
     }
   };
 
@@ -302,6 +313,8 @@ function ProjectDetails() {
                   <TableCell>Multimedia</TableCell>
                   <TableCell>Contributors</TableCell>
                   <TableCell>Live Demo</TableCell>
+                  <TableCell>Like Count</TableCell>
+                  <TableCell>Status</TableCell>
                   <TableCell>Type</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -375,22 +388,24 @@ function ProjectDetails() {
                             {item.live_demo}
                           </Link>
                         </TableCell>
+                        <TableCell>{item.likecount}</TableCell>
                         <TableCell>
-                          {item.isActive === "true" ? (
-                            <FaToggleOn
-                              onClick={() => handlestatus(item._id, false)}
-                              size={23}
-                              color="green"
-                            />
-                          ) : (
-                            <FaToggleOff
-                              onClick={() => handlestatus(item._id, true)}
-                              size={23}
-                              color="red"
-                            />
-                          )}
+                          <div onClick={toggleStatus}>
+                            {item?.isActive === "true" ? (
+                              <FaToggleOn
+                                onClick={() => handlestatus(item._id, t)}
+                                size={23}
+                                color="green"
+                              />
+                            ) : (
+                              <FaToggleOff
+                                onClick={() => handlestatus(item._id, f)}
+                                size={23}
+                                color="red"
+                              />
+                            )}
+                          </div>
                         </TableCell>
-
                         <TableCell>{item.type}</TableCell>
                         <TableCell>
                           <div className="flex flex-row gap-2">

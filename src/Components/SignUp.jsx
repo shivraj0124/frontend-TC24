@@ -4,18 +4,15 @@ import signUpImage from "../assets/signUp.png";
 import axios from "axios";
 import toast from "react-hot-toast";
 import themeHook from "./Context";
-import {
-  Link,
-  UNSAFE_ViewTransitionContext,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+
 function SignUp() {
   const { findForm, setFindForm } = themeHook();
   const [fullName, setFullName] = useState("");
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedCollege, setSelectedCollege] = useState();
+  const [selectedCollege, setSelectedCollege] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [eye, setEye] = useState(false);
@@ -26,6 +23,7 @@ function SignUp() {
   const validatePassword = (pass) => pass.length >= 8;
   const [showdept, setshowdept] = useState(false);
   const [dept, setdepts] = useState([]);
+  const [selecteddep, setselecteddep] = useState("");
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -51,6 +49,7 @@ function SignUp() {
         userType: "student",
         mobileNo: mobile,
         allocated_college: selectedCollege,
+        allocated_department: selecteddep,
       });
       console.log(result);
       if (result.data.data.status === 200) {
@@ -66,7 +65,7 @@ function SignUp() {
         });
       }
     } catch (err) {
-      toast.error(err.message); // Use err.message to get the error message
+      toast.error(err.message);
     }
   };
   const getAllColleges = async () => {
@@ -74,30 +73,31 @@ function SignUp() {
       const result = await axios.get(
         "http://localhost:8000/api/college/getAllColleges"
       );
-      console.log(result.data.data);
       setCollegeList(result.data.data.data);
     } catch (err) {
-      toast.error(err.message); // Use err.message to get the error message
+      toast.error(err.message);
+    }
+  };
+  const getdept = async (id) => {
+    console.log(id, "helo");
+    try {
+      const result = await axios.post(
+        "http://localhost:8000/api/auth/getDepartment",
+        {
+          college_id: id,
+        }
+      );
+      console.log(result);
+      setdepts(result.data.data.data);
+    } catch (err) {
+      toast.error(err.message);
     }
   };
 
-  const getdept = async () => {
-    try {
-      const result = await axios.get(
-        "http://localhost:8000/api/auth/getDepartment",
-        {
-          college_id: selectedCollege,
-        }
-      );
-      console.log(result.data);
-      setdepts();
-    } catch (err) {
-      toast.error(err.message); // Use err.message to get the error message
-    }
-  };
   useEffect(() => {
     getAllColleges();
   }, [findForm]);
+
   return (
     <div className="pt-5  h-screen flex justify-center bg-blue-50 overflow-y-auto">
       <div className="flex flex-row fixed  bg-[#fcfcfe] shadow-xl rounded-md mt-10 max-md:mt-2  max-md:w-[90%] justify-center items-center w-max h-max py-4 ">
@@ -111,7 +111,7 @@ function SignUp() {
           <form className="flex flex-col mt-5 w-max" onSubmit={handleOnSubmit}>
             <div className="flex flex-row gap-4">
               <div className="flex flex-col">
-                <label className="mt-5">Full Name</label>
+                <label className="mt-5">Full Name </label>
                 <input
                   type="text"
                   className="border-2 border-gray-300 rounded-md px-2 py-1 focus:outline-none placeholder:text-sm placeholder:text-gray-400"
@@ -150,7 +150,7 @@ function SignUp() {
                   onChange={(event) => {
                     setSelectedCollege(event.target.value);
                     setshowdept(true);
-                    getdept();
+                    getdept(event.target.value);
                   }}
                 >
                   <option value="">Select Your College</option>
@@ -169,14 +169,14 @@ function SignUp() {
                   <label className="mt-5">Select Department</label>
                   <select
                     className="border-2 border-gray-300 rounded-md px-2 py-1 focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                    value={}
+                    value={selecteddep}
                     onChange={(event) => {
-                      setSelectedCollege(event.target.value);
+                      setselecteddep(event.target.value);
                     }}
                   >
-                    <option value="">Select Your College</option>
-                    {collegeList &&
-                      collegeList.map((item, index) => {
+                    <option value="">Select Your Department</option>
+                    {dept &&
+                      dept.map((item, index) => {
                         return (
                           <option
                             key={index + 1}

@@ -13,6 +13,7 @@ import Ap from "../Charts/Ap";
 import Select from "react-select";
 function Dashboard() {
   const [data, setData] = useState();
+  const [clg, setclg] = useState([]);
   const getTotalCount = async () => {
     try {
       const result = await axios.get(
@@ -24,9 +25,23 @@ function Dashboard() {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
+
+  const getcollege = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:8000/api/admin/getcolleges"
+      );
+      console.log(result.data.data);
+      setclg(result.data.data);
+    } catch (err) {
+      toast.error(err.message); // Use err.message to get the error message
+    }
+  };
   useEffect(() => {
     getTotalCount();
+    getcollege();
   }, []);
+
   return (
     <div className="flex flex-col w-full  h-[90vh] p-5">
       <div className="flex flex-row justify-between ">
@@ -108,8 +123,13 @@ function Dashboard() {
             hod={data?.totalCountHod}
           />
           <div>
-            <section className=" px-4  w-full">
-              <Select></Select>
+            <section className="  mx-10  w-full">
+              <Select
+                options={clg.map((item) => ({
+                  value: item._id,
+                  label: item.name,
+                }))}
+              />
             </section>
 
             <Ap />

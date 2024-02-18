@@ -169,7 +169,7 @@ function SignUp() {
                   <label className="mt-5">Select Department</label>
                   <select
                     className="border-2 border-gray-300 rounded-md px-2 py-1 focus:outline-none placeholder:text-sm placeholder:text-gray-400"
-                    value={selectedCollege}
+                    value={}
                     onChange={(event) => {
                       setSelectedCollege(event.target.value);
                     }}

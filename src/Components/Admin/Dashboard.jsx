@@ -10,6 +10,7 @@ import Bar from "../Charts/Chart";
 import { AreaChart } from "recharts";
 import Area from "../Charts/Ap";
 import Ap from "../Charts/Ap";
+import Select from "react-select";
 function Dashboard() {
   const [data, setData] = useState();
   const getTotalCount = async () => {
@@ -106,7 +107,13 @@ function Dashboard() {
             poc={data?.totalCountPoc}
             hod={data?.totalCountHod}
           />
-          <Ap />
+          <div>
+            <section className=" px-4  w-full">
+              <Select></Select>
+            </section>
+
+            <Ap />
+          </div>
         </div>
       </div>
     </div>

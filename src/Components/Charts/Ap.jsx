@@ -8,19 +8,19 @@ import {
   Tooltip,
 } from "recharts";
 
-export default function Ap() {
+export default function Ap({ hod, student, project }) {
   const data = [
     {
-      name: "Page A",
-      uv: 1000,
+      name: "Hods",
+      value: hod,
     },
     {
-      name: "Page B",
-      uv: 1700,
+      name: " Students",
+      value: student,
     },
     {
-      name: "Page C",
-      uv: 500,
+      name: "Projects",
+      value: project,
     },
   ];
 
@@ -44,7 +44,7 @@ export default function Ap() {
       <Tooltip />
       <Area
         type="monotone"
-        dataKey="uv"
+        dataKey="value"
         stroke="#82ca9d"
         fillOpacity={1}
         fill="url(#colorUv)"

@@ -14,6 +14,8 @@ import Select from "react-select";
 function Dashboard() {
   const [data, setData] = useState();
   const [clg, setclg] = useState([]);
+  const [bdata, setbdata] = useState("");
+  const [selectedCollegeId, setSelectedCollegeId] = useState("");
   const getTotalCount = async () => {
     try {
       const result = await axios.get(
@@ -31,12 +33,27 @@ function Dashboard() {
       const result = await axios.get(
         "http://localhost:8000/api/admin/getcolleges"
       );
-      console.log(result.data.data);
+      console.log(result.data.data, "ddd");
       setclg(result.data.data);
     } catch (err) {
       toast.error(err.message); // Use err.message to get the error message
     }
   };
+  const getdata = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8000/api/college/getcount",
+        { college_id: selectedCollegeId }
+      );
+      console.log(data.totalCountHod);
+      setbdata(data);
+    } catch (error) {}
+  };
+  const handleCollegeSelect = (selectedOption) => {
+    setSelectedCollegeId(selectedOption.value);
+    getdata();
+  };
+
   useEffect(() => {
     getTotalCount();
     getcollege();
@@ -129,10 +146,15 @@ function Dashboard() {
                   value: item._id,
                   label: item.name,
                 }))}
+                onChange={handleCollegeSelect}
               />
             </section>
 
-            <Ap />
+            <Ap
+              hod={bdata?.totalCountHod}
+              student={bdata?.totalCountStudent}
+              project={bdata?.totalcountProject}
+            />
           </div>
         </div>
       </div>
